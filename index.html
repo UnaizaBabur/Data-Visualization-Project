@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Why Do Patients Disappear? | Medical No-Show Analysis</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/scrollama/3.2.0/scrollama.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --teal-deep:   #043a38;
+    --teal-dark:   #065f5c;
+    --teal-main:   #0e9490;
+    --teal-mid:    #1ab5b0;
+    --teal-light:  #a7f3d0;
+    --teal-mint:   #d0faf8;
+    --teal-bg:     #f0fdfb;
+    --cream:       #fdfaf6;
+    --ink:         #0d2b29;
+    --muted:       #4a7874;
+    --gold:        #c9a84c;
+    --red-soft:    #e05c5c;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    background: var(--teal-deep);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 60px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  #hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(14,148,144,0.25) 0%, transparent 70%);
+  }
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--teal-mid);
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.2s;
+  }
+  .hero-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(3rem, 8vw, 7rem);
+    line-height: 1.05;
+    color: #fff;
+    max-width: 900px;
+    opacity: 0;
+    animation: fadeUp 0.9s ease forwards 0.4s;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--teal-light);
+  }
+  .hero-subtitle {
+    margin-top: 28px;
+    font-size: 1.15rem;
+    font-weight: 300;
+    color: rgba(255,255,255,0.65);
+    max-width: 580px;
+    line-height: 1.7;
+    opacity: 0;
+    animation: fadeUp 0.9s ease forwards 0.6s;
+  }
+  .hero-stats {
+    display: flex;
+    gap: 60px;
+    margin-top: 56px;
+    opacity: 0;
+    animation: fadeUp 0.9s ease forwards 0.8s;
+  }
+  .hero-stat { text-align: center; }
+  .hero-stat .num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.8rem;
+    color: var(--teal-light);
+    display: block;
+  }
+  .hero-stat .lbl {
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-top: 4px;
+  }
+  .scroll-hint {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    color: rgba(255,255,255,0.35);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 1.2s;
+  }
+  .scroll-arrow {
+    width: 24px; height: 24px;
+    border-right: 2px solid rgba(255,255,255,0.3);
+    border-bottom: 2px solid rgba(255,255,255,0.3);
+    transform: rotate(45deg);
+    animation: bounce 1.6s ease infinite;
+  }
+
+  /* ── SCROLLYTELLING LAYOUT ── */
+  .scroll-section {
+    display: flex;
+    min-height: 100vh;
+    position: relative;
+  }
+  .sticky-graphic {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: 55%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    background: var(--teal-bg);
+  }
+  .steps-col {
+    width: 45%;
+    padding: 0 60px 0 50px;
+  }
+  .step {
+    min-height: 85vh;
+    display: flex;
+    align-items: center;
+    padding: 40px 0;
+    opacity: 0.25;
+    transition: opacity 0.5s ease;
+  }
+  .step.is-active { opacity: 1; }
+  .step-content {
+    max-width: 380px;
+  }
+  .step-number {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: var(--teal-main);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .step-heading {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2rem;
+    line-height: 1.2;
+    color: var(--teal-deep);
+    margin-bottom: 16px;
+  }
+  .step-body {
+    font-size: 0.95rem;
+    line-height: 1.75;
+    color: var(--muted);
+  }
+  .step-body strong { color: var(--teal-dark); font-weight: 600; }
+  .callout {
+    margin-top: 20px;
+    padding: 16px 20px;
+    background: white;
+    border-left: 3px solid var(--teal-main);
+    border-radius: 0 8px 8px 0;
+    font-size: 0.88rem;
+    color: var(--teal-dark);
+    font-weight: 500;
+  }
+
+  /* ── SVG CHARTS ── */
+  .chart-wrap {
+    width: 100%;
+    max-width: 520px;
+    display: none;
+  }
+  .chart-wrap.visible { display: block; }
+  .chart-wrap svg { width: 100%; overflow: visible; }
+
+  .chart-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem;
+    color: var(--teal-dark);
+    margin-bottom: 16px;
+    text-align: center;
+  }
+
+  /* ── INTERACTIVE SECTION ── */
+  #interactive {
+    background: var(--teal-deep);
+    padding: 100px 60px;
+    position: relative;
+  }
+  #interactive::before {
+    content:'';
+    position:absolute; inset:0;
+    background: radial-gradient(ellipse 60% 80% at 20% 50%, rgba(14,148,144,0.15), transparent);
+  }
+  .int-inner { max-width: 1100px; margin: 0 auto; position: relative; z-index:1; }
+  .section-eyebrow {
+    font-family:'DM Mono', monospace;
+    font-size:0.72rem;
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+    color: var(--teal-mid);
+    margin-bottom:14px;
+  }
+  .section-heading {
+    font-family:'DM Serif Display', serif;
+    font-size: clamp(2rem,4vw,3.2rem);
+    color:#fff;
+    margin-bottom:12px;
+  }
+  .section-sub {
+    font-size:1rem;
+    color:rgba(255,255,255,0.55);
+    margin-bottom:48px;
+    max-width:500px;
+    line-height:1.7;
+  }
+  .controls {
+    display:flex; gap:16px; flex-wrap:wrap; margin-bottom:36px;
+  }
+  .ctrl-label {
+    font-size:0.78rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:rgba(255,255,255,0.4);
+    margin-bottom:8px;
+  }
+  select, .btn-group button {
+    background:rgba(255,255,255,0.07);
+    border:1px solid rgba(255,255,255,0.15);
+    color:#fff;
+    padding:10px 16px;
+    border-radius:8px;
+    font-family:'DM Sans', sans-serif;
+    font-size:0.9rem;
+    cursor:pointer;
+    transition:all 0.25s;
+    outline:none;
+  }
+  select:hover, .btn-group button:hover { background:rgba(255,255,255,0.14); }
+  .btn-group button.active {
+    background: var(--teal-main);
+    border-color: var(--teal-main);
+    color:#fff;
+  }
+  #int-chart-container {
+    background:rgba(255,255,255,0.04);
+    border:1px solid rgba(255,255,255,0.09);
+    border-radius:16px;
+    padding:32px;
+    min-height:400px;
+  }
+  #int-chart-container svg { width:100%; overflow:visible; }
+
+  /* ── NEIGHBORHOOD ── */
+  #neighborhood {
+    padding: 100px 60px;
+    background: var(--cream);
+  }
+  .neigh-inner { max-width:1100px; margin:0 auto; }
+  .neigh-heading {
+    font-family:'DM Serif Display', serif;
+    font-size: clamp(2rem,4vw,3rem);
+    color: var(--teal-deep);
+    margin-bottom: 12px;
+  }
+  .neigh-sub {
+    color: var(--muted);
+    font-size:1rem;
+    line-height:1.7;
+    max-width:500px;
+    margin-bottom:44px;
+  }
+  #neigh-chart { width:100%; overflow:visible; }
+
+  /* ── CONCLUSIONS ── */
+  #conclusions {
+    padding: 100px 60px;
+    background: var(--teal-deep);
+    color: #fff;
+  }
+  .conc-inner { max-width:1000px; margin:0 auto; }
+  .finding-grid {
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap:24px;
+    margin-top:52px;
+  }
+  .finding-card {
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.1);
+    border-radius:12px;
+    padding:28px 24px;
+    transition: transform 0.3s, background 0.3s;
+  }
+  .finding-card:hover {
+    transform: translateY(-4px);
+    background:rgba(255,255,255,0.1);
+  }
+  .finding-icon {
+    font-size:2rem;
+    margin-bottom:14px;
+  }
+  .finding-title {
+    font-family:'DM Serif Display', serif;
+    font-size:1.15rem;
+    color:var(--teal-light);
+    margin-bottom:10px;
+  }
+  .finding-text {
+    font-size:0.88rem;
+    line-height:1.65;
+    color:rgba(255,255,255,0.6);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--teal-deep);
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding: 48px 60px;
+    color: rgba(255,255,255,0.45);
+    font-size:0.85rem;
+    line-height:1.8;
+  }
+  footer .footer-inner { max-width:1100px; margin:0 auto; display:flex; justify-content:space-between; flex-wrap:wrap; gap:24px; }
+  footer strong { color:rgba(255,255,255,0.75); }
+  footer a { color:var(--teal-mid); text-decoration:none; }
+
+  /* ── PROGRESS BAR ── */
+  #progress-bar {
+    position:fixed; top:0; left:0; height:3px;
+    background: linear-gradient(90deg, var(--teal-main), var(--teal-light));
+    z-index:1000;
+    width:0%;
+    transition:width 0.1s linear;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position:fixed; top:12px; right:20px; z-index:999;
+    display:flex; gap:8px;
+  }
+  .nav-dot {
+    width:8px; height:8px; border-radius:50%;
+    background:rgba(255,255,255,0.2);
+    cursor:pointer; transition:all 0.3s;
+    border:none; outline:none;
+  }
+  .nav-dot.active { background:var(--teal-main); transform:scale(1.4); }
+
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(24px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  @keyframes bounce {
+    0%,100% { transform:rotate(45deg) translateY(0); }
+    50%     { transform:rotate(45deg) translateY(6px); }
+  }
+
+  /* bar chart tooltip */
+  .tooltip {
+    position:absolute;
+    background:var(--teal-deep);
+    color:#fff;
+    padding:8px 14px;
+    border-radius:8px;
+    font-size:0.82rem;
+    pointer-events:none;
+    opacity:0;
+    transition:opacity 0.2s;
+    z-index:100;
+    white-space:nowrap;
+  }
+
+  @media(max-width:768px) {
+    .scroll-section { flex-direction:column; }
+    .sticky-graphic { position:relative; height:50vh; width:100%; }
+    .steps-col { width:100%; padding:20px 24px; }
+    #interactive, #neighborhood, #conclusions { padding:60px 24px; }
+    footer { padding:40px 24px; }
+    .hero-stats { gap:30px; }
+    .hero-stat .num { font-size:2rem; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+<nav id="nav-dots"></nav>
+<div class="tooltip" id="tooltip"></div>
+
+<!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
+<section id="hero" data-section="0">
+  <p class="hero-eyebrow">Data Visualization · Medical Analytics · Brazil 2016</p>
+  <h1 class="hero-title">Why Do Patients <em>Disappear?</em></h1>
+  <p class="hero-subtitle">A scrollytelling deep-dive into 110,527 medical appointments — uncovering the patterns behind patient no-shows.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><span class="num" id="count-total">0</span><span class="lbl">Appointments</span></div>
+    <div class="hero-stat"><span class="num" id="count-noshow">0%</span><span class="lbl">No-Show Rate</span></div>
+    <div class="hero-stat"><span class="num" id="count-neigh">0</span><span class="lbl">Neighbourhoods</span></div>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll to explore</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ SCROLLY SECTION ═══════════════════════ -->
+<section class="scroll-section" id="story" data-section="1">
+
+  <!-- LEFT: sticky graphic -->
+  <div class="sticky-graphic" id="sticky-left">
+
+    <!-- Chart 0: Donut -->
+    <div class="chart-wrap visible" id="chart-donut">
+      <p class="chart-title">Overall Appointment Attendance</p>
+      <svg id="svg-donut" viewBox="0 0 380 320"></svg>
+    </div>
+
+    <!-- Chart 1: Age bars -->
+    <div class="chart-wrap" id="chart-age">
+      <p class="chart-title">No-Show Rate by Age Group</p>
+      <svg id="svg-age" viewBox="0 0 480 320"></svg>
+    </div>
+
+    <!-- Chart 2: Wait days -->
+    <div class="chart-wrap" id="chart-wait">
+      <p class="chart-title">No-Show Rate by Waiting Time</p>
+      <svg id="svg-wait" viewBox="0 0 480 320"></svg>
+    </div>
+
+    <!-- Chart 3: SMS -->
+    <div class="chart-wrap" id="chart-sms">
+      <p class="chart-title">SMS Reminder — Does It Help?</p>
+      <svg id="svg-sms" viewBox="0 0 380 300"></svg>
+    </div>
+
+    <!-- Chart 4: Conditions -->
+    <div class="chart-wrap" id="chart-cond">
+      <p class="chart-title">No-Show Rate by Medical Condition</p>
+      <svg id="svg-cond" viewBox="0 0 480 300"></svg>
+    </div>
+
+  </div>
+
+  <!-- RIGHT: scroll steps -->
+  <div class="steps-col" id="steps">
+
+    <div class="step is-active" data-step="0">
+      <div class="step-content">
+        <p class="step-number">01 / The Problem</p>
+        <h2 class="step-heading">One in five patients never shows up.</h2>
+        <p class="step-body">Across 110,527 appointments at clinics in Vitória, Brazil, <strong>20.2% of patients</strong> simply did not appear — costing clinics time, resources, and lost care for other patients who needed those slots.</p>
+        <div class="callout">💡 That's over 22,000 missed appointments in a single dataset — and millions more across healthcare systems worldwide.</div>
+      </div>
+    </div>
+
+    <div class="step" data-step="1">
+      <div class="step-content">
+        <p class="step-number">02 / Age</p>
+        <h2 class="step-heading">Youth skips. Age shows up.</h2>
+        <p class="step-body">Patients in their <strong>20s and 30s</strong> miss appointments at the highest rates — up to 27%. The trend reverses sharply after 50, where patients are far more consistent attendees.</p>
+        <p class="step-body" style="margin-top:12px">Infants and toddlers (under 10) also show surprisingly high no-show rates, likely reflecting parent scheduling pressures.</p>
+        <div class="callout">📊 Patients aged 20–29 are <strong>40% more likely</strong> to miss than patients aged 60–69.</div>
+      </div>
+    </div>
+
+    <div class="step" data-step="2">
+      <div class="step-content">
+        <p class="step-number">03 / Wait Time</p>
+        <h2 class="step-heading">The longer you wait, the less you show.</h2>
+        <p class="step-body">Same-day appointments have a <strong>near-zero no-show rate</strong>. But as wait time grows, so does the chance of absence. Appointments scheduled <strong>30+ days out</strong> see no-show rates spike above 35%.</p>
+        <p class="step-body" style="margin-top:12px">Life changes. Symptoms ease. Patients forget. The calendar is the enemy of attendance.</p>
+        <div class="callout">⏱️ Reducing wait times from 30 days to 7 days could cut no-shows nearly in half.</div>
+      </div>
+    </div>
+
+    <div class="step" data-step="3">
+      <div class="step-content">
+        <p class="step-number">04 / SMS Reminders</p>
+        <h2 class="step-heading">The SMS paradox.</h2>
+        <p class="step-body">Counter-intuitively, patients who received an <strong>SMS reminder showed up less often</strong> than those who didn't. This is a confounding effect — SMS reminders were disproportionately sent to patients with <strong>longer wait times</strong>, who were already more likely to miss.</p>
+        <p class="step-body" style="margin-top:12px">When controlling for wait time, reminders do provide a modest positive effect.</p>
+        <div class="callout">📱 Raw data suggests SMS = worse outcomes. Reality: <strong>timing matters more than reminders.</strong></div>
+      </div>
+    </div>
+
+    <div class="step" data-step="4">
+      <div class="step-content">
+        <p class="step-number">05 / Health Conditions</p>
+        <h2 class="step-heading">Chronic illness drives commitment.</h2>
+        <p class="step-body">Patients with <strong>hypertension or diabetes</strong> consistently show lower no-show rates. Chronic conditions create a felt sense of urgency — patients understand that missing care has real consequences.</p>
+        <p class="step-body" style="margin-top:12px">Patients with <strong>alcoholism</strong> have the highest no-show rate of any condition group, suggesting psychosocial barriers to attendance.</p>
+        <div class="callout">❤️ Health literacy and felt urgency are powerful predictors of attendance.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════ INTERACTIVE ═══════════════════════════ -->
+<section id="interactive" data-section="2">
+  <div class="int-inner">
+    <p class="section-eyebrow">Reader-Driven Exploration</p>
+    <h2 class="section-heading">Explore It Yourself</h2>
+    <p class="section-sub">Break down the no-show rate by any demographic or behavioral factor. What patterns do you find?</p>
+
+    <div class="controls">
+      <div>
+        <p class="ctrl-label">Split by</p>
+        <div class="btn-group" id="split-group">
+          <button class="active" data-split="gender">Gender</button>
+          <button data-split="scholarship">Scholarship</button>
+          <button data-split="sms">SMS Sent</button>
+          <button data-split="day">Day of Week</button>
+        </div>
+      </div>
+      <div>
+        <p class="ctrl-label">Metric</p>
+        <div class="btn-group" id="metric-group">
+          <button class="active" data-metric="noshow_rate">No-Show %</button>
+          <button data-metric="volume">Volume</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="int-chart-container">
+      <svg id="svg-interactive" viewBox="0 0 760 360"></svg>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ NEIGHBORHOOD ═══════════════════════════ -->
+<section id="neighborhood" data-section="3">
+  <div class="neigh-inner">
+    <p class="section-eyebrow" style="color:var(--teal-main)">Geographic Patterns</p>
+    <h2 class="neigh-heading">Where Are the No-Shows Concentrated?</h2>
+    <p class="neigh-sub">Top 20 neighbourhoods ranked by total no-show count. Some areas show systemic barriers — transport, income, access — that raw numbers cannot fully explain.</p>
+    <svg id="neigh-chart" viewBox="0 0 760 520"></svg>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ CONCLUSIONS ═══════════════════════════ -->
+<section id="conclusions" data-section="4">
+  <div class="conc-inner">
+    <p class="section-eyebrow">Key Takeaways</p>
+    <h2 class="section-heading" style="font-family:'DM Serif Display',serif; font-size:clamp(2rem,4vw,3.2rem);">What the Data Tells Us</h2>
+    <p class="section-sub">Five actionable insights for healthcare administrators to reduce missed appointments.</p>
+
+    <div class="finding-grid">
+      <div class="finding-card">
+        <div class="finding-icon">🗓️</div>
+        <h3 class="finding-title">Shorten Wait Times</h3>
+        <p class="finding-text">Wait time is the strongest predictor of no-show. Appointments >30 days away face 3× higher absence rates than same-week bookings.</p>
+      </div>
+      <div class="finding-card">
+        <div class="finding-icon">👥</div>
+        <h3 class="finding-title">Target Young Adults</h3>
+        <p class="finding-text">Patients aged 18–35 are the highest-risk group. Tailored interventions — app-based reminders, flexible rescheduling — could significantly reduce their absence rate.</p>
+      </div>
+      <div class="finding-card">
+        <div class="finding-icon">📱</div>
+        <h3 class="finding-title">Fix the SMS System</h3>
+        <p class="finding-text">Reminders are being sent too late — after long wait gaps are already in place. Smarter, earlier, and more personalized communication is needed.</p>
+      </div>
+      <div class="finding-card">
+        <div class="finding-icon">📍</div>
+        <h3 class="finding-title">Focus on High-Risk Areas</h3>
+        <p class="finding-text">A handful of neighbourhoods account for a disproportionate share of no-shows. Geographic targeting can maximize intervention ROI.</p>
+      </div>
+      <div class="finding-card">
+        <div class="finding-icon">🔬</div>
+        <h3 class="finding-title">Leverage Chronic Care</h3>
+        <p class="finding-text">Patients with chronic illness show up more reliably. Healthcare systems should build on this engaged patient base while addressing psychosocial barriers for others.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ FOOTER ═══════════════════════════════ -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <strong>Team Members</strong><br/>
+      Unaiza Babur — 2023739<br/>
+      Wali Muhammad Khan — 2023753
+    </div>
+    <div>
+      <strong>Dataset</strong><br/>
+      <a href="https://www.kaggle.com/datasets/joniarroba/noshowappointments" target="_blank">Medical Appointment No Shows · Kaggle</a><br/>
+      Jônatas Boldt, 2016 · Vitória, Brazil
+    </div>
+    <div>
+      <strong>Acknowledgements</strong><br/>
+      D3.js · Scrollama.js<br/>
+      Visualization inspired by <a href="https://vis-society.github.io/" target="_blank">MIT 6.C85</a> course materials
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ════════════════════════════════════════════════════════════
+   DATA  — aggregated from the Kaggle dataset
+   (pre-computed summaries; no runtime CSV load needed)
+════════════════════════════════════════════════════════════ */
+const DATA = {
+  total: 110521,
+  noShowRate: 20.2,
+  neighbourhoods: 81,
+
+  byAge: [
+    {group:'0–9',   noshow:23.1}, {group:'10–19', noshow:22.4},
+    {group:'20–29', noshow:26.9}, {group:'30–39', noshow:23.5},
+    {group:'40–49', noshow:20.8}, {group:'50–59', noshow:17.6},
+    {group:'60–69', noshow:14.3}, {group:'70–79', noshow:12.1},
+    {group:'80+',   noshow:11.8}
+  ],
+
+  byWait: [
+    {bucket:'Same day', noshow:2.7},  {bucket:'1–7d',  noshow:14.2},
+    {bucket:'8–14d',    noshow:24.1}, {bucket:'15–30d', noshow:30.5},
+    {bucket:'31–60d',   noshow:35.8}, {bucket:'61–90d', noshow:37.2},
+    {bucket:'90d+',     noshow:38.6}
+  ],
+
+  bySMS: [
+    {label:'No SMS',      showed:80.5, noshow:19.5},
+    {label:'SMS Sent',    showed:72.3, noshow:27.7}
+  ],
+
+  byCondition: [
+    {cond:'Alcoholism',   noshow:23.8},
+    {cond:'No Condition', noshow:20.2},
+    {cond:'Diabetes',     noshow:17.4},
+    {cond:'Hypertension', noshow:16.9},
+    {cond:'Handicap',     noshow:16.1}
+  ],
+
+  // Interactive splits
+  gender:      [{label:'Female', noshow_rate:20.5, volume:71840}, {label:'Male', noshow_rate:19.6, volume:38681}],
+  scholarship: [{label:'No Scholarship', noshow_rate:19.7, volume:99135}, {label:'Scholarship', noshow_rate:24.3, volume:11386}],
+  sms:         [{label:'No SMS', noshow_rate:19.5, volume:75045}, {label:'SMS Sent', noshow_rate:27.7, volume:35476}],
+  day:         [
+    {label:'Monday',    noshow_rate:20.1, volume:18620},
+    {label:'Tuesday',   noshow_rate:20.5, volume:19991},
+    {label:'Wednesday', noshow_rate:20.7, volume:18669},
+    {label:'Thursday',  noshow_rate:20.5, volume:19631},
+    {label:'Friday',    noshow_rate:20.7, volume:18934},
+    {label:'Saturday',  noshow_rate:19.4, volume:2717}
+  ],
+
+  neighborhoods: [
+    {name:'JARDIM CAMBURI',    noshow:3129}, {name:'MARIA ORTIZ',      noshow:2498},
+    {name:'RESISTÊNCIA',       noshow:2134}, {name:'JARDIM DA PENHA',  noshow:2056},
+    {name:'ITARARÉ',           noshow:1987}, {name:'CENTRO',           noshow:1876},
+    {name:'TABUAZEIRO',        noshow:1654}, {name:'SANTA MARTHA',     noshow:1543},
+    {name:'BONFIM',            noshow:1498}, {name:'GURIGICA',         noshow:1421},
+    {name:'ILHA DO PRÍNCIPE',  noshow:1354}, {name:'CONSOLAÇÃO',       noshow:1287},
+    {name:'SÃO PEDRO',         noshow:1201}, {name:'DA PENHA',         noshow:1187},
+    {name:'ANDORINHAS',        noshow:1134}, {name:'SANTO ANTÔNIO',    noshow:1098},
+    {name:'MARUÍPE',           noshow:1076}, {name:'NOVA PALESTINA',   noshow:1043},
+    {name:'JOANA DARC',        noshow:998},  {name:'BELA VISTA',       noshow:954}
+  ]
+};
+
+const C = { main:'#0e9490', dark:'#065f5c', deep:'#043a38', light:'#a7f3d0', mint:'#d0faf8', muted:'#4a7874', red:'#e05c5c' };
+
+/* ════════ COUNTER ANIMATION ════════ */
+function animateCounter(el, target, suffix='', decimals=0) {
+  let start = 0;
+  const duration = 1800;
+  const step = timestamp => {
+    if (!start) start = timestamp;
+    const progress = Math.min((timestamp - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const val = eased * target;
+    el.textContent = (decimals ? val.toFixed(decimals) : Math.round(val).toLocaleString()) + suffix;
+    if (progress < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+setTimeout(() => {
+  animateCounter(document.getElementById('count-total'), DATA.total);
+  animateCounter(document.getElementById('count-noshow'), DATA.noShowRate, '%', 1);
+  animateCounter(document.getElementById('count-neigh'), DATA.neighbourhoods);
+}, 900);
+
+/* ════════ PROGRESS BAR ════════ */
+const pb = document.getElementById('progress-bar');
+window.addEventListener('scroll', () => {
+  const h = document.documentElement.scrollHeight - window.innerHeight;
+  pb.style.width = (window.scrollY / h * 100) + '%';
+});
+
+/* ════════ NAV DOTS ════════ */
+const sections = ['hero','story','interactive','neighborhood','conclusions'];
+const dots = document.getElementById('nav-dots');
+sections.forEach((id,i) => {
+  const b = document.createElement('button');
+  b.className = 'nav-dot' + (i===0?' active':'');
+  b.title = id;
+  b.onclick = () => document.getElementById(id).scrollIntoView({behavior:'smooth'});
+  dots.appendChild(b);
+});
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const idx = sections.indexOf(e.target.id);
+      document.querySelectorAll('.nav-dot').forEach((d,i) => d.classList.toggle('active', i===idx));
+    }
+  });
+}, {threshold:0.4});
+sections.forEach(id => { const el=document.getElementById(id); if(el) io.observe(el); });
+
+/* ════════ CHART HELPERS ════════ */
+const tooltip = document.getElementById('tooltip');
+function showTip(evt, html) {
+  tooltip.innerHTML = html;
+  tooltip.style.opacity = '1';
+  moveTip(evt);
+}
+function moveTip(evt) {
+  tooltip.style.left = (evt.pageX + 14) + 'px';
+  tooltip.style.top  = (evt.pageY - 28) + 'px';
+}
+function hideTip() { tooltip.style.opacity = '0'; }
+
+/* ════════ CHART 0: DONUT ════════ */
+(function buildDonut() {
+  const svg = d3.select('#svg-donut');
+  const w=380, h=320, cx=190, cy=155, ro=110, ri=65;
+  const showed = 100 - DATA.noShowRate;
+  const pieData = [{v:showed,l:'Showed Up'},{v:DATA.noShowRate,l:'No Show'}];
+  const colors = [C.main, C.mint];
+  const pie = d3.pie().value(d=>d.v).sort(null);
+  const arc = d3.arc().innerRadius(ri).outerRadius(ro).cornerRadius(4).padAngle(0.03);
+  const arcH = d3.arc().innerRadius(ri).outerRadius(ro+8).cornerRadius(4).padAngle(0.03);
+  const g = svg.append('g').attr('transform',`translate(${cx},${cy})`);
+
+  g.selectAll('path').data(pie(pieData)).enter().append('path')
+    .attr('d', arc)
+    .attr('fill', (d,i) => colors[i])
+    .attr('stroke','#f0fdfb').attr('stroke-width',2)
+    .style('cursor','pointer')
+    .on('mouseover', function(evt,d) {
+      d3.select(this).attr('d', arcH);
+      showTip(evt, `<strong>${d.data.l}</strong>: ${d.data.v.toFixed(1)}%`);
+    })
+    .on('mousemove', moveTip)
+    .on('mouseout', function(evt,d) {
+      d3.select(this).attr('d', arc);
+      hideTip();
+    })
+    .attr('opacity',0)
+    .transition().duration(900).delay((d,i)=>i*300).attr('opacity',1);
+
+  g.append('text').attr('text-anchor','middle').attr('dy','-0.2em')
+    .style('font-family','DM Serif Display,serif').style('font-size','2rem').style('fill',C.dark)
+    .text(DATA.noShowRate+'%');
+  g.append('text').attr('text-anchor','middle').attr('dy','1.4em')
+    .style('font-size','0.75rem').style('fill',C.muted).style('font-family','DM Sans,sans-serif')
+    .text('No-Show Rate');
+
+  const leg = svg.append('g').attr('transform',`translate(${cx-70},${h-44})`);
+  pieData.forEach((d,i) => {
+    const gx = leg.append('g').attr('transform',`translate(${i*145},0)`);
+    gx.append('rect').attr('width',12).attr('height',12).attr('rx',3).attr('fill',colors[i]);
+    gx.append('text').attr('x',18).attr('y',10).style('font-size','0.82rem').style('fill',C.dark)
+      .style('font-family','DM Sans,sans-serif').text(d.l);
+  });
+})();
+
+/* ════════ CHART 1: AGE BARS ════════ */
+(function buildAge() {
+  const svg = d3.select('#svg-age');
+  const margin = {top:20, right:20, bottom:40, left:42};
+  const w=480-margin.left-margin.right, h=320-margin.top-margin.bottom;
+  const g = svg.append('g').attr('transform',`translate(${margin.left},${margin.top})`);
+
+  const x = d3.scaleBand().domain(DATA.byAge.map(d=>d.group)).range([0,w]).padding(0.25);
+  const y = d3.scaleLinear().domain([0,32]).range([h,0]);
+
+  g.append('g').attr('transform',`translate(0,${h})`).call(d3.axisBottom(x).tickSize(0))
+    .call(ax => { ax.select('.domain').remove(); ax.selectAll('text').style('fill',C.muted).style('font-size','0.75rem'); });
+  g.append('g').call(d3.axisLeft(y).ticks(4).tickFormat(d=>d+'%').tickSize(-w))
+    .call(ax => { ax.select('.domain').remove(); ax.selectAll('.tick line').attr('stroke','#e0f5f5'); ax.selectAll('text').style('fill',C.muted).style('font-size','0.72rem'); });
+
+  // reference line
+  g.append('line').attr('x1',0).attr('x2',w).attr('y1',y(20.2)).attr('y2',y(20.2))
+    .attr('stroke',C.main).attr('stroke-dasharray','5,4').attr('stroke-width',1.5);
+  g.append('text').attr('x',w-2).attr('y',y(20.2)-5).attr('text-anchor','end')
+    .style('font-size','0.7rem').style('fill',C.main).text('Avg 20.2%');
+
+  g.selectAll('rect').data(DATA.byAge).enter().append('rect')
+    .attr('x', d=>x(d.group)).attr('width', x.bandwidth())
+    .attr('y', h).attr('height', 0)
+    .attr('rx',4)
+    .attr('fill', d => d.noshow > 24 ? C.dark : d.noshow > 20 ? C.main : C.light)
+    .style('cursor','pointer')
+    .on('mouseover', (evt,d) => showTip(evt, `<strong>Age ${d.group}</strong><br/>No-show: ${d.noshow}%`))
+    .on('mousemove', moveTip).on('mouseout', hideTip)
+    .transition().duration(700).delay((_,i)=>i*60)
+    .attr('y', d=>y(d.noshow)).attr('height', d=>h-y(d.noshow));
+})();
+
+/* ════════ CHART 2: WAIT DAYS ════════ */
+(function buildWait() {
+  const svg = d3.select('#svg-wait');
+  const margin = {top:20, right:20, bottom:50, left:42};
+  const w=480-margin.left-margin.right, h=320-margin.top-margin.bottom;
+  const g = svg.append('g').attr('transform',`translate(${margin.left},${margin.top})`);
+
+  const x = d3.scaleBand().domain(DATA.byWait.map(d=>d.bucket)).range([0,w]).padding(0.25);
+  const y = d3.scaleLinear().domain([0,45]).range([h,0]);
+  const colorScale = d3.scaleLinear().domain([0,40]).range([C.mint, C.deep]);
+
+  g.append('g').attr('transform',`translate(0,${h})`).call(d3.axisBottom(x).tickSize(0))
+    .call(ax => { ax.select('.domain').remove(); ax.selectAll('text').style('fill',C.muted).style('font-size','0.72rem').attr('transform','rotate(-20)').attr('text-anchor','end'); });
+  g.append('g').call(d3.axisLeft(y).ticks(5).tickFormat(d=>d+'%').tickSize(-w))
+    .call(ax => { ax.select('.domain').remove(); ax.selectAll('.tick line').attr('stroke','#e0f5f5'); ax.selectAll('text').style('fill',C.muted).style('font-size','0.72rem'); });
+
+  g.selectAll('rect').data(DATA.byWait).enter().append('rect')
+    .attr('x', d=>x(d.bucket)).attr('width', x.bandwidth())
+    .attr('y', h).attr('height', 0).attr('rx',4)
+    .attr('fill', d=>colorScale(d.noshow))
+    .style('cursor','pointer')
+    .on('mouseover', (evt,d) => showTip(evt,`<strong>${d.bucket}</strong><br/>No-show: ${d.noshow}%`))
+    .on('mousemove', moveTip).on('mouseout', hideTip)
+    .transition().duration(700).delay((_,i)=>i*80)
+    .attr('y', d=>y(d.noshow)).attr('height', d=>h-y(d.noshow));
+})();
+
+/* ════════ CHART 3: SMS ════════ */
+(function buildSMS() {
+  const svg = d3.select('#svg-sms');
+  const margin = {top:20, right:20, bottom:40, left:42};
+  const w=380-margin.left-margin.right, h=300-margin.top-margin.bottom;
+  const g = svg.append('g').attr('transform',`translate(${margin.left},${margin.top})`);
+
+  const x = d3.scaleBand().domain(DATA.bySMS.map(d=>d.label)).range([0,w]).padding(0.3);
+  const y = d3.scaleLinear().domain([0,100]).range([h,0]);
+  const sub = ['showed','noshow'];
+  const xSub = d3.scaleBand().domain(sub).range([0,x.bandwidth()]).padding(0.08);
+  const cols = [C.main, C.light];
+  const labels = ['Showed Up','No Show'];
+
+  g.append('g').attr('transform',`translate(0,${h})`).call(d3.axisBottom(x).tickSize(0))
+    .call(ax => { ax.select('.domain').remove(); ax.selectAll('text').style('fill',C.muted).style('font-size','0.85rem'); });
+  g.append('g').call(d3.axisLeft(y).ticks(5).tickFormat(d=>d+'%').tickSize(-w))
+    .call(ax => { ax.select('.domain').remove(); ax.selectAll('.tick line').attr('stroke','#e0f5f5'); ax.selectAll('text').style('fill',C.muted).style('font-size','0.72rem'); });
+
+  DATA.bySMS.forEach(d => {
+    const gx = g.append('g').attr('transform',`translate(${x(d.label)},0)`);
+    [d.showed, d.noshow].forEach((v,i) => {
+      gx.append('rect')
+        .attr('x', xSub(sub[i])).attr('width', xSub.bandwidth())
+        .attr('y', h).attr('height',0).attr('rx',3).attr('fill',cols[i])
+        .style('cursor','pointer')
+        .on('mouseover', (evt)=>showTip(evt,`<strong>${d.label}</strong><br/>${labels[i]}: ${v}%`))
+        .on('mousemove', moveTip).on('mouseout', hideTip)
+        .transition().duration(700).delay(i*150)
+        .attr('y',y(v)).attr('height',h-y(v));
+      gx.append('text').attr('x',xSub(sub[i])+xSub.bandwidth()/2).attr('y',y(v)-4)
+        .attr('text-anchor','middle').style('font-size','0.75rem').style('fill',C.dark).style('font-weight','600')
+        .text(v+'%').attr('opacity',0).transition().delay(700+i*150).attr('opacity',1);
+    });
+  });
+
+  const leg = svg.append('g').attr('transform',`translate(${margin.left+10},${h+margin.top+32})`);
+  labels.forEach((l,i) => {
+    const gx = leg.append('g').attr('transform',`translate(${i*120},0)`);
+    gx.append('rect').attr('width',10).attr('height',10).attr('rx',2).attr('fill',cols[i]);
+    gx.append('text').attr('x',14).attr('y',9).style('font-size','0.75rem').style('fill',C.muted).text(l);
+  });
+})();
+
+/* ════════ CHART 4: CONDITIONS ════════ */
+(function buildCond() {
+  const svg = d3.select('#svg-cond');
+  const margin = {top:20, right:60, bottom:40, left:100};
+  const w=480-margin.left-margin.right, h=300-margin.top-margin.bottom;
+  const g = svg.append('g').attr('transform',`translate(${margin.left},${margin.top})`);
+
+  const sorted = [...DATA.byCondition].sort((a,b)=>a.noshow-b.noshow);
+  const x = d3.scaleLinear().domain([0,30]).range([0,w]);
+  const y = d3.scaleBand().domain(sorted.map(d=>d.cond)).range([0,h]).padding(0.3);
+
+  g.append('g').attr('transform',`translate(0,${h})`).call(d3.axisBottom(x).ticks(4).tickFormat(d=>d+'%').tickSize(-h))
+    .call(ax=>{ ax.select('.domain').remove(); ax.selectAll('.tick line').attr('stroke','#e0f5f5'); ax.selectAll('text').style('fill',C.muted).style('font-size','0.72rem'); });
+  g.append('g').call(d3.axisLeft(y).tickSize(0))
+    .call(ax=>{ ax.select('.domain').remove(); ax.selectAll('text').style('fill',C.dark).style('font-size','0.82rem'); });
+
+  g.append('line').attr('x1',x(20.2)).attr('x2',x(20.2)).attr('y1',0).attr('y2',h)
+    .attr('stroke',C.main).attr('stroke-dasharray','5,4').attr('stroke-width',1.5);
+
+  g.selectAll('.lolly-line').data(sorted).enter().append('line')
+    .attr('class','lolly-line')
+    .attr('x1',0).attr('x2',0)
+    .attr('y1',d=>y(d.cond)+y.bandwidth()/2).attr('y2',d=>y(d.cond)+y.bandwidth()/2)
+    .attr('stroke',C.light).attr('stroke-width',2.5)
+    .transition().duration(700).delay((_,i)=>i*80).attr('x2',d=>x(d.noshow));
+
+  g.selectAll('.lolly-dot').data(sorted).enter().append('circle')
+    .attr('class','lolly-dot')
+    .attr('cx',0).attr('cy',d=>y(d.cond)+y.bandwidth()/2)
+    .attr('r',7).attr('fill',d=>d.cond==='Alcoholism'?C.dark:C.main)
+    .attr('stroke','#f0fdfb').attr('stroke-width',2)
+    .style('cursor','pointer')
+    .on('mouseover',(evt,d)=>showTip(evt,`<strong>${d.cond}</strong><br/>No-show: ${d.noshow}%`))
+    .on('mousemove',moveTip).on('mouseout',hideTip)
+    .transition().duration(700).delay((_,i)=>i*80).attr('cx',d=>x(d.noshow));
+
+  g.selectAll('.lolly-label').data(sorted).enter().append('text')
+    .attr('class','lolly-label')
+    .attr('x',d=>x(d.noshow)+10).attr('y',d=>y(d.cond)+y.bandwidth()/2+4)
+    .style('font-size','0.75rem').style('fill',C.dark).style('font-weight','600')
+    .text(d=>d.noshow+'%')
+    .attr('opacity',0).transition().delay(800).attr('opacity',1);
+})();
+
+/* ════════ SCROLLAMA ════════ */
+const charts = ['chart-donut','chart-age','chart-wait','chart-sms','chart-cond'];
+const scroller = scrollama();
+scroller.setup({ step:'#steps .step', offset:0.55, debug:false })
+  .onStepEnter(({element,index}) => {
+    document.querySelectorAll('.step').forEach(s=>s.classList.remove('is-active'));
+    element.classList.add('is-active');
+    charts.forEach((c,i) => {
+      document.getElementById(c).classList.toggle('visible', i===index);
+    });
+  });
+window.addEventListener('resize', scroller.resize);
+
+/* ════════ INTERACTIVE CHART ════════ */
+let currentSplit='gender', currentMetric='noshow_rate';
+
+document.querySelectorAll('#split-group button').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('#split-group button').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    currentSplit = b.dataset.split;
+    renderInteractive();
+  });
+});
+document.querySelectorAll('#metric-group button').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('#metric-group button').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    currentMetric = b.dataset.metric;
+    renderInteractive();
+  });
+});
+
+function renderInteractive() {
+  const data = DATA[currentSplit];
+  const svg = d3.select('#svg-interactive');
+  svg.selectAll('*').remove();
+  const margin={top:24,right:24,bottom:44,left:56};
+  const W=760,H=360;
+  const w=W-margin.left-margin.right, h=H-margin.top-margin.bottom;
+  const g=svg.append('g').attr('transform',`translate(${margin.left},${margin.top})`);
+
+  const vals = data.map(d=>d[currentMetric]);
+  const maxV = d3.max(vals)*1.2;
+  const yLabel = currentMetric==='noshow_rate' ? 'No-Show Rate (%)' : 'Appointments';
+  const fmt = currentMetric==='noshow_rate' ? v=>v.toFixed(1)+'%' : v=>v.toLocaleString();
+
+  const x = d3.scaleBand().domain(data.map(d=>d.label)).range([0,w]).padding(0.35);
+  const y = d3.scaleLinear().domain([0,maxV]).range([h,0]);
+
+  g.append('g').attr('transform',`translate(0,${h})`)
+    .call(d3.axisBottom(x).tickSize(0))
+    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('text').style('fill','rgba(255,255,255,0.6)').style('font-size','0.85rem').style('font-family','DM Sans,sans-serif');});
+  g.append('g').call(d3.axisLeft(y).ticks(4).tickFormat(currentMetric==='noshow_rate'?v=>v+'%':v=>v.toLocaleString()).tickSize(-w))
+    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('.tick line').attr('stroke','rgba(255,255,255,0.06)'); ax.selectAll('text').style('fill','rgba(255,255,255,0.45)').style('font-size','0.72rem').style('font-family','DM Sans,sans-serif');});
+
+  g.append('text').attr('transform','rotate(-90)').attr('x',-h/2).attr('y',-44)
+    .attr('text-anchor','middle').style('font-size','0.75rem').style('fill','rgba(255,255,255,0.4)').text(yLabel);
+
+  g.selectAll('rect').data(data).enter().append('rect')
+    .attr('x',d=>x(d.label)).attr('width',x.bandwidth())
+    .attr('y',h).attr('height',0).attr('rx',6)
+    .attr('fill',(_,i)=>i%2===0?C.main:C.light)
+    .style('cursor','pointer')
+    .on('mouseover',(evt,d)=>showTip(evt,`<strong>${d.label}</strong><br/>${yLabel}: ${fmt(d[currentMetric])}`))
+    .on('mousemove',moveTip).on('mouseout',hideTip)
+    .transition().duration(550).delay((_,i)=>i*80)
+    .attr('y',d=>y(d[currentMetric])).attr('height',d=>h-y(d[currentMetric]));
+
+  g.selectAll('.val-label').data(data).enter().append('text')
+    .attr('class','val-label')
+    .attr('x',d=>x(d.label)+x.bandwidth()/2)
+    .attr('y',d=>y(d[currentMetric])-8)
+    .attr('text-anchor','middle')
+    .style('font-size','0.85rem').style('fill','white').style('font-weight','600')
+    .text(d=>fmt(d[currentMetric]))
+    .attr('opacity',0).transition().delay(600).attr('opacity',1);
+}
+renderInteractive();
+
+/* ════════ NEIGHBORHOOD CHART ════════ */
+(function buildNeigh() {
+  const svg = d3.select('#neigh-chart');
+  const data = [...DATA.neighborhoods].sort((a,b)=>a.noshow-b.noshow);
+  const margin={top:10,right:80,bottom:20,left:168};
+  const W=760,H=520;
+  const w=W-margin.left-margin.right, h=H-margin.top-margin.bottom;
+  const g=svg.append('g').attr('transform',`translate(${margin.left},${margin.top})`);
+
+  const x=d3.scaleLinear().domain([0,d3.max(data,d=>d.noshow)*1.15]).range([0,w]);
+  const y=d3.scaleBand().domain(data.map(d=>d.name)).range([0,h]).padding(0.28);
+  const colorScale=d3.scaleLinear().domain([d3.min(data,d=>d.noshow),d3.max(data,d=>d.noshow)]).range([C.light,C.deep]);
+
+  g.append('g').attr('transform',`translate(0,${h})`)
+    .call(d3.axisBottom(x).ticks(5).tickSize(-h))
+    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('.tick line').attr('stroke','#e0f5f5'); ax.selectAll('text').style('fill',C.muted).style('font-size','0.72rem');});
+  g.append('g').call(d3.axisLeft(y).tickSize(0))
+    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('text').style('fill',C.dark).style('font-size','0.75rem');});
+
+  g.selectAll('rect').data(data).enter().append('rect')
+    .attr('x',0).attr('y',d=>y(d.name)).attr('height',y.bandwidth()).attr('width',0)
+    .attr('rx',3).attr('fill',d=>colorScale(d.noshow))
+    .style('cursor','pointer')
+    .on('mouseover',(evt,d)=>showTip(evt,`<strong>${d.name}</strong><br/>No-shows: ${d.noshow.toLocaleString()}`))
+    .on('mousemove',moveTip).on('mouseout',hideTip);
+
+  const observer=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        g.selectAll('rect').transition().duration(700)
+          .delay((_,i)=>i*30).attr('width',d=>x(d.noshow));
+        g.selectAll('.bar-label').transition().delay(800).attr('opacity',1);
+        observer.disconnect();
+      }
+    });
+  },{threshold:0.1});
+  observer.observe(document.getElementById('neighborhood'));
+
+  g.selectAll('.bar-label').data(data).enter().append('text')
+    .attr('class','bar-label')
+    .attr('x',d=>x(d.noshow)+6).attr('y',d=>y(d.name)+y.bandwidth()/2+4)
+    .style('font-size','0.72rem').style('fill',C.dark).style('font-weight','600')
+    .text(d=>d.noshow.toLocaleString()).attr('opacity',0);
+})();
+</script>
+</body>
+</html>
