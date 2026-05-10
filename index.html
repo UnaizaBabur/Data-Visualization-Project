@@ -127,7 +127,7 @@
   @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
   @keyframes bounce { 0%,100%{transform:rotate(45deg) translateY(0)} 50%{transform:rotate(45deg) translateY(6px)} }
 
-  .tooltip { position:absolute; background:var(--teal-deep); color:#fff; padding:8px 14px; border-radius:8px; font-size:0.82rem; pointer-events:none; opacity:0; transition:opacity 0.2s; z-index:100; white-space:nowrap; }
+  .tooltip { position:absolute; background:var(--teal-deep); color:#fff; padding:8px 14px; border-radius:8px; font-size:0.82rem; border: 1px solid var(--teal-mid); pointer-events:none; opacity:0; transition:opacity 0.2s; z-index:2000; white-space:nowrap; }
 
   /* Waffle */
   .waffle-grid { display:flex; flex-wrap:wrap; gap:3px; width:280px; margin:0 auto 20px; }
@@ -238,14 +238,12 @@
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════════════════
-     NEW SECTION 1: ATTENDANCE OVERVIEW (Waffle + Violin)
-════════════════════════════════════════════════════════ -->
+<!-- SECTION 1: ATTENDANCE OVERVIEW -->
 <section class="panel-section teal-bg" id="sec-overview" data-section="2">
   <div class="panel-inner">
     <p class="panel-eyebrow">Attendance Overview</p>
     <h2 class="panel-heading">Breaking Down the Numbers</h2>
-    <p class="panel-sub">Two complementary views of the same attendance data — a waffle chart for intuitive proportion reading and a violin plot for full age distribution shape.</p>
+    <p class="panel-sub">Two views of the attendance data — a waffle chart for intuitive proportion and a violin plot for full age distribution.</p>
     <div class="grid-2">
       <div class="chart-card">
         <p class="chart-card-title">Appointment Attendance (Waffle Chart)</p>
@@ -263,14 +261,12 @@
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════════════════
-     NEW SECTION 2: MEDICAL CONDITIONS BAR + CORRELATION
-════════════════════════════════════════════════════════ -->
+<!-- SECTION 2: CLINICAL FACTORS -->
 <section class="panel-section light" id="sec-conditions" data-section="3">
   <div class="panel-inner">
     <p class="panel-eyebrow">Clinical Factors</p>
-    <h2 class="panel-heading">Medical Conditions & Feature Correlations</h2>
-    <p class="panel-sub">Which conditions are most prevalent, and how strongly do all features relate to each other and to attendance outcomes?</p>
+    <h2 class="panel-heading">Medical Conditions & Correlations</h2>
+    <p class="panel-sub">Condition prevalence and how clinical features relate to attendance outcomes.</p>
     <div class="grid-2">
       <div class="chart-card">
         <p class="chart-card-title">Distribution of Medical Conditions</p>
@@ -284,14 +280,12 @@
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════════════════
-     NEW SECTION 3: TEMPORAL PATTERNS (2×2)
-════════════════════════════════════════════════════════ -->
+<!-- SECTION 3: TEMPORAL PATTERNS -->
 <section class="panel-section dark" id="sec-temporal" data-section="4">
   <div class="panel-inner">
     <p class="panel-eyebrow" style="color:var(--teal-mid)">Temporal Patterns</p>
     <h2 class="panel-heading" style="color:#fff">When Do Patients Miss?</h2>
-    <p class="panel-sub">Day of week, month, raw wait day distribution, and binned wait duration — revealing how time shapes attendance behavior.</p>
+    <p class="panel-sub">Analyzing time-based behavior from day of the week to long-term waiting periods.</p>
     <div class="grid-2x2">
       <div class="chart-card" style="background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.1)">
         <p class="chart-card-title" style="color:var(--teal-light)">No-Show Rate by Day of Week</p>
@@ -302,7 +296,7 @@
         <svg id="svg-month" viewBox="0 0 420 240"></svg>
       </div>
       <div class="chart-card" style="background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.1)">
-        <p class="chart-card-title" style="color:var(--teal-light)">Wait Days Distribution (capped at 90)</p>
+        <p class="chart-card-title" style="color:var(--teal-light)">Wait Days Distribution</p>
         <svg id="svg-waitdist" viewBox="0 0 420 240"></svg>
       </div>
       <div class="chart-card" style="background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.1)">
@@ -313,14 +307,12 @@
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════════════════
-     NEW SECTION 4: FEATURE COMBINATIONS (3-panel)
-════════════════════════════════════════════════════════ -->
+<!-- SECTION 4: MULTI-FACTOR INTERACTIONS -->
 <section class="panel-section teal-bg" id="sec-combos" data-section="5">
   <div class="panel-inner">
     <p class="panel-eyebrow">Multi-Factor Interactions</p>
     <h2 class="panel-heading">How Factors Interact</h2>
-    <p class="panel-sub">Breaking down no-show rates across combinations of age, SMS, gender, conditions, and day of week.</p>
+    <p class="panel-sub">Breaking down outcomes across combinations of age, SMS, and day of week.</p>
     <div class="grid-3">
       <div class="chart-card">
         <p class="chart-card-title">Age Group × SMS Received</p>
@@ -338,112 +330,12 @@
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════════════════
-     NEW SECTION 5: DEMOGRAPHIC COMPARISONS (2×2)
-════════════════════════════════════════════════════════ -->
-<section class="panel-section light" id="sec-demographics" data-section="6">
-  <div class="panel-inner">
-    <p class="panel-eyebrow">Demographic Breakdown</p>
-    <h2 class="panel-heading">No-Show Rate by Demographic Group</h2>
-    <p class="panel-sub">Gender, age group, condition-based diverging chart, and scholarship×gender cross-comparison.</p>
-    <div class="grid-2x2">
-      <div class="chart-card">
-        <p class="chart-card-title">By Gender</p>
-        <svg id="svg-demo-gender" viewBox="0 0 380 220"></svg>
-      </div>
-      <div class="chart-card">
-        <p class="chart-card-title">By Age Group</p>
-        <svg id="svg-demo-age" viewBox="0 0 380 220"></svg>
-      </div>
-      <div class="chart-card">
-        <p class="chart-card-title">No-Show vs Overall Average (Diverging)</p>
-        <svg id="svg-demo-diverge" viewBox="0 0 380 260"></svg>
-      </div>
-      <div class="chart-card">
-        <p class="chart-card-title">Scholarship × Gender</p>
-        <svg id="svg-demo-scholar" viewBox="0 0 380 220"></svg>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════════════════════════════════════════════
-     NEW SECTION 6: AGE vs ATTENDANCE (Box + Gender Count)
-════════════════════════════════════════════════════════ -->
-<section class="panel-section dark" id="sec-age-gender" data-section="7">
-  <div class="panel-inner">
-    <p class="panel-eyebrow" style="color:var(--teal-mid)">Investigating Questions</p>
-    <h2 class="panel-heading" style="color:#fff">Does Age or Gender Predict Absence?</h2>
-    <p class="panel-sub">Box plots reveal the central tendency; countplots show raw volume differences between groups.</p>
-    <div class="grid-2">
-      <div class="chart-card" style="background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.1)">
-        <p class="chart-card-title" style="color:var(--teal-light)">Age vs Appointment Attendance (Box Plot)</p>
-        <svg id="svg-boxplot" viewBox="0 0 400 280"></svg>
-      </div>
-      <div class="chart-card" style="background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.1)">
-        <p class="chart-card-title" style="color:var(--teal-light)">Gender vs Appointment Attendance</p>
-        <svg id="svg-gender-count" viewBox="0 0 400 280"></svg>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════════════════════════════════════════════
-     NEW SECTION 7: PATIENT REPEAT BEHAVIOUR
-════════════════════════════════════════════════════════ -->
-<section class="panel-section teal-bg" id="sec-repeat" data-section="8">
-  <div class="panel-inner">
-    <p class="panel-eyebrow">Patient Behaviour</p>
-    <h2 class="panel-heading">Repeat Appointment Analysis</h2>
-    <p class="panel-sub">How many appointments does each patient have? Are repeat patients more or less reliable? Who are the chronic no-shows?</p>
-    <div class="grid-3">
-      <div class="chart-card">
-        <p class="chart-card-title">Appointments per Patient (capped at 10)</p>
-        <svg id="svg-repeat-appt" viewBox="0 0 320 240"></svg>
-      </div>
-      <div class="chart-card">
-        <p class="chart-card-title">Avg No-Show Rate: Single vs Repeat</p>
-        <svg id="svg-repeat-rate" viewBox="0 0 320 240"></svg>
-      </div>
-      <div class="chart-card">
-        <p class="chart-card-title">Chronic No-Shows (≥50% miss rate)</p>
-        <svg id="svg-chronic" viewBox="0 0 320 240"></svg>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════════════════════════════════════════════════
-     NEW SECTION 8: OUTLIER DETECTION
-════════════════════════════════════════════════════════ -->
-<section class="panel-section light" id="sec-outliers" data-section="9">
-  <div class="panel-inner">
-    <p class="panel-eyebrow">Outlier Detection</p>
-    <h2 class="panel-heading">Spotting the Extremes</h2>
-    <p class="panel-sub">Z-score analysis on age, IQR fencing on wait days, and neighbourhood-level anomaly detection.</p>
-    <div class="grid-3">
-      <div class="chart-card">
-        <p class="chart-card-title">Age Outliers (Z-score &gt; 3)</p>
-        <svg id="svg-outlier-age" viewBox="0 0 320 240"></svg>
-      </div>
-      <div class="chart-card">
-        <p class="chart-card-title">Wait Days — IQR Outlier Detection</p>
-        <svg id="svg-outlier-wait" viewBox="0 0 320 240"></svg>
-      </div>
-      <div class="chart-card">
-        <p class="chart-card-title">Neighbourhood No-Show Anomalies (±2σ)</p>
-        <svg id="svg-outlier-neigh" viewBox="0 0 320 240"></svg>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- INTERACTIVE SECTION (original) -->
+<!-- INTERACTIVE SECTION -->
 <section id="interactive" data-section="10">
   <div class="int-inner">
     <p class="section-eyebrow">Reader-Driven Exploration</p>
     <h2 class="section-heading">Explore It Yourself</h2>
-    <p class="section-sub">Break down the no-show rate by any demographic or behavioral factor. What patterns do you find?</p>
+    <p class="section-sub">Break down the no-show rate by demographic or behavioral factors.</p>
     <div class="controls">
       <div>
         <p class="ctrl-label">Split by</p>
@@ -468,28 +360,26 @@
   </div>
 </section>
 
-<!-- NEIGHBORHOOD (original) -->
+<!-- NEIGHBORHOOD -->
 <section id="neighborhood" data-section="11">
   <div class="neigh-inner">
     <p class="section-eyebrow" style="color:var(--teal-main)">Geographic Patterns</p>
     <h2 class="neigh-heading">Where Are the No-Shows Concentrated?</h2>
-    <p class="neigh-sub">Top 20 neighbourhoods ranked by total no-show count. Some areas show systemic barriers — transport, income, access — that raw numbers cannot fully explain.</p>
+    <p class="neigh-sub">Top 20 neighbourhoods ranked by total no-show count.</p>
     <svg id="neigh-chart" viewBox="0 0 760 520"></svg>
   </div>
 </section>
 
-<!-- CONCLUSIONS (original) -->
+<!-- CONCLUSIONS -->
 <section id="conclusions" data-section="12">
   <div class="conc-inner">
     <p class="section-eyebrow">Key Takeaways</p>
     <h2 style="font-family:'DM Serif Display',serif; font-size:clamp(2rem,4vw,3.2rem); color:#fff; margin-bottom:12px;">What the Data Tells Us</h2>
-    <p style="font-size:1rem; color:rgba(255,255,255,0.55); margin-bottom:0; max-width:500px; line-height:1.7;">Five actionable insights for healthcare administrators to reduce missed appointments.</p>
     <div class="finding-grid">
-      <div class="finding-card"><div class="finding-icon"> </div><h3 class="finding-title">Shorten Wait Times</h3><p class="finding-text">Wait time is the strongest predictor of no-show. Appointments >30 days away face 3× higher absence rates than same-week bookings.</p></div>
-      <div class="finding-card"><div class="finding-icon"> </div><h3 class="finding-title">Target Young Adults</h3><p class="finding-text">Patients aged 18–35 are the highest-risk group. Tailored interventions — app-based reminders, flexible rescheduling — could significantly reduce their absence rate.</p></div>
-      <div class="finding-card"><div class="finding-icon"> </div><h3 class="finding-title">Fix the SMS System</h3><p class="finding-text">Reminders are being sent too late — after long wait gaps are already in place. Smarter, earlier, and more personalized communication is needed.</p></div>
-      <div class="finding-card"><div class="finding-icon"> </div><h3 class="finding-title">Focus on High-Risk Areas</h3><p class="finding-text">A handful of neighbourhoods account for a disproportionate share of no-shows. Geographic targeting can maximize intervention ROI.</p></div>
-      <div class="finding-card"><div class="finding-icon"> </div><h3 class="finding-title">Leverage Chronic Care</h3><p class="finding-text">Patients with chronic illness show up more reliably. Healthcare systems should build on this engaged patient base while addressing psychosocial barriers for others.</p></div>
+      <div class="finding-card"><h3 class="finding-title">Shorten Wait Times</h3><p class="finding-text">Wait time is the strongest predictor of no-show. Appointments >30 days away face 3× higher absence rates.</p></div>
+      <div class="finding-card"><h3 class="finding-title">Target Young Adults</h3><p class="finding-text">Patients aged 18–35 are high-risk. App-based reminders or flexible rescheduling can help.</p></div>
+      <div class="finding-card"><h3 class="finding-title">Fix SMS Logic</h3><p class="finding-text">Reminders sent too late don't help. Timely, earlier communication is required for long gaps.</p></div>
+      <div class="finding-card"><h3 class="finding-title">Focus on Hotspots</h3><p class="finding-text">Certain neighborhoods account for a huge share of no-shows; geographic targeting is key.</p></div>
     </div>
   </div>
 </section>
@@ -497,16 +387,14 @@
 <footer>
   <div class="footer-inner">
     <div><strong>Team Members</strong><br/>Unaiza Babur — 2023739<br/>Wali Muhammad Khan — 2023753</div>
-    <div><strong>Dataset</strong><br/><a href="https://www.kaggle.com/datasets/joniarroba/noshowappointments" target="_blank">Medical Appointment No Shows · Kaggle</a><br/>Jônatas Boldt, 2016 · Vitória, Brazil</div>
-    <div><strong>Acknowledgements</strong><br/>D3.js · Scrollama.js<br/>Visualization inspired by <a href="https://vis-society.github.io/" target="_blank">MIT 6.C85</a> course materials</div>
+    <div><strong>Dataset</strong><br/><a href="https://www.kaggle.com/datasets/joniarroba/noshowappointments" target="_blank">Medical Appointment No Shows · Kaggle</a></div>
   </div>
 </footer>
 
 <script>
-/* ══════════════════════════════ DATA ══════════════════════════════ */
+/* DATA CONSTANTS */
 const DATA = {
   total:110521, noShowRate:20.2, neighbourhoods:81,
-
   byAge:[
     {group:'0–9',noshow:23.1},{group:'10–19',noshow:22.4},
     {group:'20–29',noshow:26.9},{group:'30–39',noshow:23.5},
@@ -544,32 +432,24 @@ const DATA = {
     {label:'Friday',noshow_rate:20.7,volume:18934},
     {label:'Saturday',noshow_rate:19.4,volume:2717}
   ],
-
-  // Correlation matrix (lower triangle, 9 features)
-  corrFeatures:['Showed_Up','Age','WaitDays','Scholar','Hypert.','Diabetes','Alcohol','Handicap','SMS'],
+  corrFeatures:['Showed','Age','Wait','Scholar','Hypert.','Diabetes','Alcohol','Handi','SMS'],
   corrMatrix:[
-    [1.00, 0.06,-0.16,-0.07,-0.04,-0.02, 0.01,-0.01,-0.15],
-    [0.06, 1.00,-0.09,-0.07, 0.50, 0.28,-0.02, 0.04,-0.09],
-    [-0.16,-0.09, 1.00, 0.05,-0.07,-0.06,-0.02,-0.01, 0.36],
-    [-0.07,-0.07, 0.05, 1.00,-0.06,-0.04, 0.03,-0.01, 0.05],
-    [-0.04, 0.50,-0.07,-0.06, 1.00, 0.43,-0.03, 0.04,-0.06],
-    [-0.02, 0.28,-0.06,-0.04, 0.43, 1.00,-0.02, 0.03,-0.05],
-    [ 0.01,-0.02,-0.02, 0.03,-0.03,-0.02, 1.00,-0.01, 0.01],
-    [-0.01, 0.04,-0.01,-0.01, 0.04, 0.03,-0.01, 1.00,-0.01],
-    [-0.15,-0.09, 0.36, 0.05,-0.06,-0.05, 0.01,-0.01, 1.00]
+    [1.0, 0.06,-0.16,-0.07,-0.04,-0.02, 0.01,-0.01,-0.15],
+    [0.06, 1.0, -0.09,-0.07, 0.50, 0.28,-0.02, 0.04,-0.09],
+    [-0.16,-0.09, 1.0, 0.05,-0.07,-0.06,-0.02,-0.01, 0.36],
+    [-0.07,-0.07, 0.05, 1.0, -0.06,-0.04, 0.03,-0.01, 0.05],
+    [-0.04, 0.50, -0.07,-0.06, 1.0, 0.43,-0.03, 0.04,-0.06],
+    [-0.02, 0.28, -0.06,-0.04, 0.43, 1.0, -0.02, 0.03,-0.05],
+    [0.01, -0.02, -0.02, 0.03, -0.03,-0.02, 1.0, -0.01, 0.01],
+    [-0.01, 0.04, -0.01,-0.01, 0.04, 0.03,-0.01, 1.0, -0.01],
+    [-0.15,-0.09, 0.36, 0.05, -0.06,-0.05, 0.01,-0.01, 1.0]
   ],
-
-  // Age groups × SMS
-  ageSMSnoSMS:  [24.2,25.1,30.5,27.2,22.4,18.9,15.0,12.8,12.1],
+  ageSMSnoSMS:[24.2,25.1,30.5,27.2,22.4,18.9,15.0,12.8,12.1],
   ageSMSwithSMS:[23.4,24.8,32.1,29.8,25.3,21.2,17.4,14.6,13.9],
   ageGroups:['0–9','10–19','20–29','30–39','40–49','50–59','60–69','70–79','80+'],
-
-  // Gender × condition
   genderCondF:[23.1,17.8,18.6,17.0,24.0],
   genderCondM:[24.8,17.0,17.1,16.8,23.4],
-  genderCondLabels:['Alcoholism','Diabetes','Hypertension','Handicap','Scholarship'],
-
-  // Age×Day heatmap (6 age groups × 6 days)
+  genderCondLabels:['Alcohol','Diabetes','Hypert.','Handi.','Scholar'],
   ageDayHeat:{
     ageGroups:['0–18','19–30','31–45','46–60','61–80','80+'],
     days:['Mon','Tue','Wed','Thu','Fri','Sat'],
@@ -582,68 +462,10 @@ const DATA = {
       [11.5,12.1,12.3,11.8,12.5,10.8]
     ]
   },
-
-  // Demographic diverging
-  divergeData:[
-    {label:'SMS Received',diff:+7.5},{label:'Scholarship',diff:+4.1},
-    {label:'Alcoholism',diff:+3.6},{label:'No Condition',diff:0.0},
-    {label:'Handicap',diff:-4.1},{label:'Diabetes',diff:-2.8},
-    {label:'Hypertension',diff:-3.3}
-  ],
-
-  // Scholarship × Gender
-  scholarGender:[
-    {label:'No Scholar — F',val:20.1},{label:'No Scholar — M',val:19.3},
-    {label:'Scholar — F',val:24.8},{label:'Scholar — M',val:23.7}
-  ],
-
-  // Box plot (age stats by attendance)
-  boxNoShow:{q1:18,median:29,q3:47,min:2,max:85},
-  boxShowed:{q1:22,median:37,q3:55,min:1,max:90},
-
-  // Gender count
-  genderCounts:[
-    {gender:'Female',showed:57020,noshow:14820},
-    {gender:'Male',showed:31110,noshow:7571}
-  ],
-
-  // Wait distribution (histogram bins)
   waitHistBins:[
     {x:0,y:8430},{x:5,y:12250},{x:10,y:9870},{x:15,y:8120},{x:20,y:6540},
-    {x:25,y:5210},{x:30,y:7830},{x:35,y:6240},{x:40,y:4980},{x:45,y:4120},
-    {x:50,y:3560},{x:55,y:3010},{x:60,y:4890},{x:65,y:2430},{x:70,y:2180},
-    {x:75,y:1870},{x:80,y:1560},{x:85,y:1240},{x:90,y:890}
+    {x:25,y:5210},{x:30,y:7830},{x:35,y:6240},{x:40,y:4980},{x:45,y:4120}
   ],
-
-  // Repeat patient data
-  apptPerPatient:[
-    {n:1,count:52140},{n:2,count:18430},{n:3,count:9810},{n:4,count:5630},
-    {n:5,count:3240},{n:6,count:1980},{n:7,count:1230},{n:8,count:820},
-    {n:9,count:560},{n:10,count:1890}
-  ],
-
-  // Neighbourhood outlier scatter
-  neighOutlier:[
-    {name:'JARDIM CAMBURI',total:15481,rate:20.2,outlier:false},
-    {name:'MARIA ORTIZ',total:12351,rate:20.2,outlier:false},
-    {name:'RESISTÊNCIA',total:10488,rate:20.4,outlier:false},
-    {name:'JARDIM DA PENHA',total:10247,rate:20.1,outlier:false},
-    {name:'ITARARÉ',total:9823,rate:20.2,outlier:false},
-    {name:'TABUAZEIRO',total:8340,rate:19.8,outlier:false},
-    {name:'SANTA MARTHA',total:7650,rate:20.1,outlier:false},
-    {name:'BONFIM',total:7320,rate:20.5,outlier:false},
-    {name:'GURIGICA',total:6980,rate:20.4,outlier:false},
-    {name:'ILHA DO PRÍNCIPE',total:3210,rate:42.2,outlier:true},
-    {name:'CONSOLAÇÃO',total:2100,rate:9.4,outlier:true},
-    {name:'SÃO PEDRO',total:5980,rate:20.1,outlier:false},
-    {name:'ANDORINHAS',total:5540,rate:20.5,outlier:false},
-    {name:'CENTRO',total:9020,rate:20.8,outlier:false},
-    {name:'MARUÍPE',total:5210,rate:20.6,outlier:false},
-    {name:'NOVA PALESTINA',total:4980,rate:21.0,outlier:false},
-    {name:'DA PENHA',total:5720,rate:20.7,outlier:false},
-    {name:'JOANA DARC',total:4820,rate:20.7,outlier:false},
-  ],
-
   neighborhoods:[
     {name:'JARDIM CAMBURI',noshow:3129},{name:'MARIA ORTIZ',noshow:2498},
     {name:'RESISTÊNCIA',noshow:2134},{name:'JARDIM DA PENHA',noshow:2056},
@@ -658,18 +480,14 @@ const DATA = {
   ]
 };
 
-const C = {
-  main:'#0e9490',dark:'#065f5c',deep:'#043a38',
-  light:'#a7f3d0',mint:'#d0faf8',muted:'#4a7874',red:'#e05c5c'
-};
+const C = { main:'#0e9490', dark:'#065f5c', deep:'#043a38', light:'#a7f3d0', mint:'#d0faf8', muted:'#4a7874', red:'#e05c5c' };
 
-/* ══════════ TOOLTIP ══════════ */
+/* TOOLTIP & SCROLL HELPERS */
 const tooltip = document.getElementById('tooltip');
 function showTip(evt,html){ tooltip.innerHTML=html; tooltip.style.opacity='1'; moveTip(evt); }
 function moveTip(evt){ tooltip.style.left=(evt.pageX+14)+'px'; tooltip.style.top=(evt.pageY-28)+'px'; }
 function hideTip(){ tooltip.style.opacity='0'; }
 
-/* ══════════ COUNTER ══════════ */
 function animateCounter(el,target,suffix='',decimals=0){
   let start=0; const dur=1800;
   const step=ts=>{ if(!start)start=ts; const p=Math.min((ts-start)/dur,1); const e=1-Math.pow(1-p,3);
@@ -683,910 +501,131 @@ setTimeout(()=>{
   animateCounter(document.getElementById('count-neigh'),DATA.neighbourhoods);
 },900);
 
-/* ══════════ PROGRESS BAR ══════════ */
-window.addEventListener('scroll',()=>{
-  const h=document.documentElement.scrollHeight-window.innerHeight;
-  document.getElementById('progress-bar').style.width=(window.scrollY/h*100)+'%';
-});
-
-/* ══════════ NAV DOTS ══════════ */
-const sections=['hero','story','sec-overview','sec-conditions','sec-temporal','sec-combos',
-  'sec-demographics','sec-age-gender','sec-repeat','sec-outliers','interactive','neighborhood','conclusions'];
+/* NAV DOTS */
+const sections=['hero','story','sec-overview','sec-conditions','sec-temporal','sec-combos','interactive','neighborhood','conclusions'];
 const dotsEl=document.getElementById('nav-dots');
 sections.forEach((id,i)=>{
   const b=document.createElement('button'); b.className='nav-dot'+(i===0?' active':'');
-  b.title=id; b.onclick=()=>document.getElementById(id).scrollIntoView({behavior:'smooth'});
+  b.onclick=()=>document.getElementById(id).scrollIntoView({behavior:'smooth'});
   dotsEl.appendChild(b);
 });
-const io=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{ if(e.isIntersecting){
-    const idx=sections.indexOf(e.target.id);
-    document.querySelectorAll('.nav-dot').forEach((d,i)=>d.classList.toggle('active',i===idx));
-  }});
-},{threshold:0.35});
-sections.forEach(id=>{ const el=document.getElementById(id); if(el)io.observe(el); });
 
-/* ══════════════════════════════════════════════════════
-   SCROLLY CHARTS (original 5)
-══════════════════════════════════════════════════════ */
+/* TREND LINE HELPER */
+function drawTrend(g, val, height, width, text) {
+  g.append('line').attr('x1', val).attr('x2', val).attr('y1', 0).attr('y2', height)
+   .attr('stroke', 'white').attr('stroke-width', 4).attr('opacity', 0.4); // Halo
+  g.append('line').attr('x1', val).attr('x2', val).attr('y1', 0).attr('y2', height)
+   .attr('stroke', C.main).attr('stroke-width', 2).attr('stroke-dasharray', '5,3');
+  g.append('text').attr('x', val + 5).attr('y', 15).style('font-size', '0.7rem').style('fill', C.deep).style('font-weight','bold').text(text);
+}
+
+/* SCROLLY CHARTS */
 (function buildDonut(){
   const svg=d3.select('#svg-donut'); const cx=190,cy=155,ro=110,ri=65;
   const showed=100-DATA.noShowRate;
   const pie=d3.pie().value(d=>d.v).sort(null);
   const arc=d3.arc().innerRadius(ri).outerRadius(ro).cornerRadius(4).padAngle(0.03);
-  const arcH=d3.arc().innerRadius(ri).outerRadius(ro+8).cornerRadius(4).padAngle(0.03);
   const g=svg.append('g').attr('transform',`translate(${cx},${cy})`);
   g.selectAll('path').data(pie([{v:showed,l:'Showed Up'},{v:DATA.noShowRate,l:'No Show'}])).enter().append('path')
-    .attr('d',arc).attr('fill',(d,i)=>[C.main,C.mint][i]).attr('stroke','#f0fdfb').attr('stroke-width',2).style('cursor','pointer')
-    .on('mouseover',function(evt,d){ d3.select(this).attr('d',arcH); showTip(evt,`<strong>${d.data.l}</strong>: ${d.data.v.toFixed(1)}%`); })
-    .on('mousemove',moveTip).on('mouseout',function(evt,d){ d3.select(this).attr('d',arc); hideTip(); })
-    .attr('opacity',0).transition().duration(900).delay((d,i)=>i*300).attr('opacity',1);
-  g.append('text').attr('text-anchor','middle').attr('dy','-0.2em')
-    .style('font-family','DM Serif Display,serif').style('font-size','2rem').style('fill',C.dark).text(DATA.noShowRate+'%');
-  g.append('text').attr('text-anchor','middle').attr('dy','1.4em')
-    .style('font-size','0.75rem').style('fill',C.muted).style('font-family','DM Sans,sans-serif').text('No-Show Rate');
-  const leg=svg.append('g').attr('transform','translate(120,276)');
-  [{v:showed,l:'Showed Up'},{v:DATA.noShowRate,l:'No Show'}].forEach((d,i)=>{
-    const gx=leg.append('g').attr('transform',`translate(${i*145},0)`);
-    gx.append('rect').attr('width',12).attr('height',12).attr('rx',3).attr('fill',[C.main,C.mint][i]);
-    gx.append('text').attr('x',18).attr('y',10).style('font-size','0.82rem').style('fill',C.dark).style('font-family','DM Sans,sans-serif').text(d.l);
-  });
+    .attr('d',arc).attr('fill',(d,i)=>[C.main,C.mint][i]).style('cursor','pointer')
+    .on('mouseover',function(evt,d){ showTip(evt,`<strong>${d.data.l}</strong>: ${d.data.v.toFixed(1)}%`); })
+    .on('mousemove',moveTip).on('mouseout',hideTip);
+  g.append('text').attr('text-anchor','middle').attr('dy','-0.2em').style('font-family','DM Serif Display').style('font-size','2rem').style('fill',C.dark).text(DATA.noShowRate+'%');
+  g.append('text').attr('text-anchor','middle').attr('dy','1.4em').style('font-size','0.75rem').style('fill',C.muted).text('No-Show Rate');
 })();
 
 (function buildAge(){
-  const svg=d3.select('#svg-age'); const margin={top:20,right:20,bottom:40,left:42};
+  const svg=d3.select('#svg-age'); const margin={top:20,right:20,bottom:50,left:50};
   const w=480-margin.left-margin.right,h=320-margin.top-margin.bottom;
   const g=svg.append('g').attr('transform',`translate(${margin.left},${margin.top})`);
   const x=d3.scaleBand().domain(DATA.byAge.map(d=>d.group)).range([0,w]).padding(0.25);
   const y=d3.scaleLinear().domain([0,32]).range([h,0]);
-  g.append('g').attr('transform',`translate(0,${h})`).call(d3.axisBottom(x).tickSize(0))
-    .call(ax=>{ax.select('.domain').remove();ax.selectAll('text').style('fill',C.muted).style('font-size','0.75rem');});
-  g.append('g').call(d3.axisLeft(y).ticks(4).tickFormat(d=>d+'%').tickSize(-w))
-    .call(ax=>{ax.select('.domain').remove();ax.selectAll('.tick line').attr('stroke','#e0f5f5');ax.selectAll('text').style('fill',C.muted).style('font-size','0.72rem');});
-  g.append('line').attr('x1',0).attr('x2',w).attr('y1',y(20.2)).attr('y2',y(20.2)).attr('stroke',C.main).attr('stroke-dasharray','5,4').attr('stroke-width',1.5);
-  g.append('text').attr('x',w-2).attr('y',y(20.2)-5).attr('text-anchor','end').style('font-size','0.7rem').style('fill',C.main).text('Avg 20.2%');
+  g.append('g').attr('transform',`translate(0,${h})`).call(d3.axisBottom(x)).selectAll('text').attr('transform','rotate(-30)').attr('text-anchor','end');
+  g.append('g').call(d3.axisLeft(y).tickFormat(d=>d+'%'));
+  drawTrend(g, x('40–49'), h, w, 'Avg: 20.2%');
   g.selectAll('rect').data(DATA.byAge).enter().append('rect')
-    .attr('x',d=>x(d.group)).attr('width',x.bandwidth()).attr('y',h).attr('height',0).attr('rx',4)
-    .attr('fill',d=>d.noshow>24?C.dark:d.noshow>20?C.main:C.light).style('cursor','pointer')
-    .on('mouseover',(evt,d)=>showTip(evt,`<strong>Age ${d.group}</strong><br/>No-show: ${d.noshow}%`))
-    .on('mousemove',moveTip).on('mouseout',hideTip)
-    .transition().duration(700).delay((_,i)=>i*60).attr('y',d=>y(d.noshow)).attr('height',d=>h-y(d.noshow));
+    .attr('x',d=>x(d.group)).attr('width',x.bandwidth()).attr('y',d=>y(d.noshow)).attr('height',d=>h-y(d.noshow)).attr('fill',C.main).attr('rx',4);
 })();
 
 (function buildWait(){
-  const svg=d3.select('#svg-wait'); const margin={top:20,right:20,bottom:50,left:42};
+  const svg=d3.select('#svg-wait'); const margin={top:20,right:20,bottom:60,left:50};
   const w=480-margin.left-margin.right,h=320-margin.top-margin.bottom;
   const g=svg.append('g').attr('transform',`translate(${margin.left},${margin.top})`);
   const x=d3.scaleBand().domain(DATA.byWait.map(d=>d.bucket)).range([0,w]).padding(0.25);
   const y=d3.scaleLinear().domain([0,45]).range([h,0]);
-  const cs=d3.scaleLinear().domain([0,40]).range([C.mint,C.deep]);
-  g.append('g').attr('transform',`translate(0,${h})`).call(d3.axisBottom(x).tickSize(0))
-    .call(ax=>{ax.select('.domain').remove();ax.selectAll('text').style('fill',C.muted).style('font-size','0.72rem').attr('transform','rotate(-20)').attr('text-anchor','end');});
-  g.append('g').call(d3.axisLeft(y).ticks(5).tickFormat(d=>d+'%').tickSize(-w))
-    .call(ax=>{ax.select('.domain').remove();ax.selectAll('.tick line').attr('stroke','#e0f5f5');ax.selectAll('text').style('fill',C.muted).style('font-size','0.72rem');});
+  g.append('g').attr('transform',`translate(0,${h})`).call(d3.axisBottom(x)).selectAll('text').attr('transform','rotate(-35)').attr('text-anchor','end');
+  g.append('g').call(d3.axisLeft(y).tickFormat(d=>d+'%'));
   g.selectAll('rect').data(DATA.byWait).enter().append('rect')
-    .attr('x',d=>x(d.bucket)).attr('width',x.bandwidth()).attr('y',h).attr('height',0).attr('rx',4).attr('fill',d=>cs(d.noshow)).style('cursor','pointer')
-    .on('mouseover',(evt,d)=>showTip(evt,`<strong>${d.bucket}</strong><br/>No-show: ${d.noshow}%`))
-    .on('mousemove',moveTip).on('mouseout',hideTip)
-    .transition().duration(700).delay((_,i)=>i*80).attr('y',d=>y(d.noshow)).attr('height',d=>h-y(d.noshow));
+    .attr('x',d=>x(d.bucket)).attr('width',x.bandwidth()).attr('y',d=>y(d.noshow)).attr('height',d=>h-y(d.noshow)).attr('fill',C.dark).attr('rx',4);
 })();
 
-(function buildSMS(){
-  const svg=d3.select('#svg-sms'); const margin={top:20,right:20,bottom:40,left:42};
-  const w=380-margin.left-margin.right,h=300-margin.top-margin.bottom;
-  const g=svg.append('g').attr('transform',`translate(${margin.left},${margin.top})`);
-  const x=d3.scaleBand().domain(DATA.bySMS.map(d=>d.label)).range([0,w]).padding(0.3);
-  const y=d3.scaleLinear().domain([0,100]).range([h,0]);
-  const sub=['showed','noshow']; const xSub=d3.scaleBand().domain(sub).range([0,x.bandwidth()]).padding(0.08);
-  const cols=[C.main,C.light]; const labels=['Showed Up','No Show'];
-  g.append('g').attr('transform',`translate(0,${h})`).call(d3.axisBottom(x).tickSize(0))
-    .call(ax=>{ax.select('.domain').remove();ax.selectAll('text').style('fill',C.muted).style('font-size','0.85rem');});
-  g.append('g').call(d3.axisLeft(y).ticks(5).tickFormat(d=>d+'%').tickSize(-w))
-    .call(ax=>{ax.select('.domain').remove();ax.selectAll('.tick line').attr('stroke','#e0f5f5');ax.selectAll('text').style('fill',C.muted).style('font-size','0.72rem');});
-  DATA.bySMS.forEach(d=>{
-    const gx=g.append('g').attr('transform',`translate(${x(d.label)},0)`);
-    [d.showed,d.noshow].forEach((v,i)=>{
-      gx.append('rect').attr('x',xSub(sub[i])).attr('width',xSub.bandwidth()).attr('y',h).attr('height',0).attr('rx',3).attr('fill',cols[i]).style('cursor','pointer')
-        .on('mouseover',evt=>showTip(evt,`<strong>${d.label}</strong><br/>${labels[i]}: ${v}%`))
-        .on('mousemove',moveTip).on('mouseout',hideTip)
-        .transition().duration(700).delay(i*150).attr('y',y(v)).attr('height',h-y(v));
-      gx.append('text').attr('x',xSub(sub[i])+xSub.bandwidth()/2).attr('y',y(v)-4)
-        .attr('text-anchor','middle').style('font-size','0.75rem').style('fill',C.dark).style('font-weight','600')
-        .text(v+'%').attr('opacity',0).transition().delay(700+i*150).attr('opacity',1);
-    });
-  });
-  const leg=svg.append('g').attr('transform',`translate(${margin.left+10},${h+margin.top+32})`);
-  labels.forEach((l,i)=>{
-    const gx=leg.append('g').attr('transform',`translate(${i*120},0)`);
-    gx.append('rect').attr('width',10).attr('height',10).attr('rx',2).attr('fill',cols[i]);
-    gx.append('text').attr('x',14).attr('y',9).style('font-size','0.75rem').style('fill',C.muted).text(l);
-  });
-})();
-
-(function buildCond(){
-  const svg=d3.select('#svg-cond'); const margin={top:20,right:60,bottom:40,left:100};
-  const w=480-margin.left-margin.right,h=300-margin.top-margin.bottom;
-  const g=svg.append('g').attr('transform',`translate(${margin.left},${margin.top})`);
-  const sorted=[...DATA.byCondition].sort((a,b)=>a.noshow-b.noshow);
-  const x=d3.scaleLinear().domain([0,30]).range([0,w]);
-  const y=d3.scaleBand().domain(sorted.map(d=>d.cond)).range([0,h]).padding(0.3);
-  g.append('g').attr('transform',`translate(0,${h})`).call(d3.axisBottom(x).ticks(4).tickFormat(d=>d+'%').tickSize(-h))
-    .call(ax=>{ax.select('.domain').remove();ax.selectAll('.tick line').attr('stroke','#e0f5f5');ax.selectAll('text').style('fill',C.muted).style('font-size','0.72rem');});
-  g.append('g').call(d3.axisLeft(y).tickSize(0))
-    .call(ax=>{ax.select('.domain').remove();ax.selectAll('text').style('fill',C.dark).style('font-size','0.82rem');});
-  g.append('line').attr('x1',x(20.2)).attr('x2',x(20.2)).attr('y1',0).attr('y2',h).attr('stroke',C.main).attr('stroke-dasharray','5,4').attr('stroke-width',1.5);
-  g.selectAll('.lolly-line').data(sorted).enter().append('line').attr('class','lolly-line')
-    .attr('x1',0).attr('x2',0).attr('y1',d=>y(d.cond)+y.bandwidth()/2).attr('y2',d=>y(d.cond)+y.bandwidth()/2)
-    .attr('stroke',C.light).attr('stroke-width',2.5).transition().duration(700).delay((_,i)=>i*80).attr('x2',d=>x(d.noshow));
-  g.selectAll('.lolly-dot').data(sorted).enter().append('circle').attr('class','lolly-dot')
-    .attr('cx',0).attr('cy',d=>y(d.cond)+y.bandwidth()/2).attr('r',7)
-    .attr('fill',d=>d.cond==='Alcoholism'?C.dark:C.main).attr('stroke','#f0fdfb').attr('stroke-width',2).style('cursor','pointer')
-    .on('mouseover',(evt,d)=>showTip(evt,`<strong>${d.cond}</strong><br/>No-show: ${d.noshow}%`))
-    .on('mousemove',moveTip).on('mouseout',hideTip)
-    .transition().duration(700).delay((_,i)=>i*80).attr('cx',d=>x(d.noshow));
-  g.selectAll('.lolly-label').data(sorted).enter().append('text').attr('class','lolly-label')
-    .attr('x',d=>x(d.noshow)+10).attr('y',d=>y(d.cond)+y.bandwidth()/2+4)
-    .style('font-size','0.75rem').style('fill',C.dark).style('font-weight','600').text(d=>d.noshow+'%')
-    .attr('opacity',0).transition().delay(800).attr('opacity',1);
-})();
-
-/* ══════════ SCROLLAMA ══════════ */
-const charts=['chart-donut','chart-age','chart-wait','chart-sms','chart-cond'];
-const scroller=scrollama();
-scroller.setup({step:'#steps .step',offset:0.55,debug:false})
-  .onStepEnter(({element,index})=>{
-    document.querySelectorAll('.step').forEach(s=>s.classList.remove('is-active'));
-    element.classList.add('is-active');
-    charts.forEach((c,i)=>{ document.getElementById(c).classList.toggle('visible',i===index); });
-  });
-window.addEventListener('resize',scroller.resize);
-
-/* ══════════════════════════════════════════════════════
-   NEW CHARTS
-══════════════════════════════════════════════════════ */
-
-/* --- WAFFLE --- */
-(function buildWaffle(){
-  const container=document.getElementById('waffle-container');
-  const showed=Math.round(79.8), noshow=100-showed;
-  const waffleDiv=document.createElement('div'); waffleDiv.className='waffle-grid';
-  for(let i=0;i<100;i++){
-    const cell=document.createElement('div'); cell.className='waffle-cell';
-    cell.style.background=i<showed?C.main:C.mint;
-    cell.title=i<showed?'Showed Up':'No Show';
-    waffleDiv.appendChild(cell);
-  }
-  container.appendChild(waffleDiv);
-})();
-
-/* --- VIOLIN PLOT (age) --- */
-(function buildViolin(){
-  const svg=d3.select('#svg-violin');
-  const margin={top:30,right:30,bottom:40,left:50};
-  const w=400-margin.left-margin.right, h=300-margin.top-margin.bottom;
-  const g=svg.append('g').attr('transform',`translate(${margin.left},${margin.top})`);
-
-  // KDE approximation of age distribution using normal kernel
-  const ageBins=[0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100];
-  // Approximate density (bimodal: young adults + elderly)
-  const density=[0.008,0.020,0.032,0.038,0.042,0.048,0.055,0.058,0.052,0.048,
-                 0.045,0.042,0.038,0.032,0.028,0.022,0.018,0.012,0.007,0.004];
-
-  const y=d3.scaleLinear().domain([0,100]).range([h,0]);
-  const x=d3.scaleLinear().domain([0,d3.max(density)]).range([0,w/2-10]);
-
-  g.append('g').call(d3.axisLeft(y).ticks(8).tickSize(-4))
-    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('text').style('fill',C.muted).style('font-size','0.72rem'); ax.selectAll('.tick line').attr('stroke','#e0f5f5');});
-  g.append('text').attr('transform','rotate(-90)').attr('x',-h/2).attr('y',-38)
-    .attr('text-anchor','middle').style('font-size','0.75rem').style('fill',C.muted).text('Age');
-
-  const cx=w/2;
-  // Build violin path points
-  const pts=density.map((d,i)=>({age:ageBins[i],d}));
-  const rightPath=pts.map(p=>[cx+x(p.d), y(p.age)]);
-  const leftPath=[...pts].reverse().map(p=>[cx-x(p.d), y(p.age)]);
-  const allPts=[...rightPath,...leftPath];
-  const lineGen=d3.line()(allPts);
-
-  g.append('path').attr('d',lineGen).attr('fill',C.main).attr('fill-opacity',0.75).attr('stroke',C.dark).attr('stroke-width',1.5);
-
-  // Quartile lines (IQR approx: Q1=18, median=37, Q3=56)
-  [18,37,56].forEach((age,i)=>{
-    const yd=density[Math.round(age/5)]; const hw=x(yd);
-    g.append('line').attr('x1',cx-hw).attr('x2',cx+hw)
-      .attr('y1',y(age)).attr('y2',y(age))
-      .attr('stroke',i===1?C.dark:C.light).attr('stroke-width',i===1?2.5:1.5).attr('stroke-dasharray',i===1?'none':'4,3');
-  });
-
-  // Mean line
-  const meanAge=37.1;
-  g.append('line').attr('x1',0).attr('x2',w).attr('y1',y(meanAge)).attr('y2',y(meanAge))
-    .attr('stroke',C.dark).attr('stroke-width',1.5).attr('stroke-dasharray','6,4');
-  g.append('text').attr('x',w+2).attr('y',y(meanAge)+4).style('font-size','0.7rem').style('fill',C.dark).style('font-weight','600').text(`Mean: ${meanAge}`);
-
-  // Label
-  g.append('text').attr('x',cx).attr('y',h+30).attr('text-anchor','middle').style('font-size','0.75rem').style('fill',C.muted).text('Density');
-})();
-
-/* --- CONDITIONS BAR CHART --- */
 (function buildCondBar(){
-  const svg=d3.select('#svg-cond-bar');
-  const margin={top:20,right:30,bottom:40,left:100};
+  const svg=d3.select('#svg-cond-bar'); const margin={top:20,right:50,bottom:40,left:120};
   const w=460-margin.left-margin.right, h=280-margin.top-margin.bottom;
   const g=svg.append('g').attr('transform',`translate(${margin.left},${margin.top})`);
-  const data=DATA.conditionCounts;
   const x=d3.scaleLinear().domain([0,25000]).range([0,w]);
-  const y=d3.scaleBand().domain(data.map(d=>d.cond)).range([0,h]).padding(0.3);
-  const barColors=[C.dark,C.main,'#1ab5b0',C.light];
-
-  g.append('g').attr('transform',`translate(0,${h})`).call(d3.axisBottom(x).ticks(4).tickFormat(d=>d3.format(',')(d)).tickSize(-h))
-    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('.tick line').attr('stroke','#e0f5f5'); ax.selectAll('text').style('fill',C.muted).style('font-size','0.72rem');});
-  g.append('g').call(d3.axisLeft(y).tickSize(0))
-    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('text').style('fill',C.dark).style('font-size','0.85rem');});
-
-  g.selectAll('rect').data(data).enter().append('rect')
-    .attr('x',0).attr('y',d=>y(d.cond)).attr('height',y.bandwidth()).attr('width',0).attr('rx',4)
-    .attr('fill',(_,i)=>barColors[i]).style('cursor','pointer')
-    .on('mouseover',(evt,d)=>showTip(evt,`<strong>${d.cond}</strong><br/>Count: ${d3.format(',')(d.count)}`))
-    .on('mousemove',moveTip).on('mouseout',hideTip)
-    .transition().duration(700).delay((_,i)=>i*100).attr('width',d=>x(d.count));
-
-  g.selectAll('.count-label').data(data).enter().append('text').attr('class','count-label')
-    .attr('x',d=>x(d.count)+6).attr('y',d=>y(d.cond)+y.bandwidth()/2+4)
-    .style('font-size','0.75rem').style('fill',C.dark).style('font-weight','600')
-    .text(d=>d3.format(',')(d.count)).attr('opacity',0).transition().delay(800).attr('opacity',1);
+  const y=d3.scaleBand().domain(DATA.conditionCounts.map(d=>d.cond)).range([0,h]).padding(0.3);
+  g.append('g').attr('transform',`translate(0,${h})`).call(d3.axisBottom(x).ticks(4));
+  g.append('g').call(d3.axisLeft(y));
+  g.selectAll('rect').data(DATA.conditionCounts).enter().append('rect')
+    .attr('x',0).attr('y',d=>y(d.cond)).attr('height',y.bandwidth()).attr('width',d=>x(d.count)).attr('fill',C.main).attr('rx',4);
 })();
 
-/* --- CORRELATION HEATMAP --- */
-(function buildHeatmap(){
-  const svg=d3.select('#svg-heatmap');
-  const margin={top:80,right:20,bottom:20,left:65};
-  const n=DATA.corrFeatures.length;
-  const cellSize=28;
-  const w=n*cellSize, h=n*cellSize;
-  const g=svg.append('g').attr('transform',`translate(${margin.left},${margin.top})`);
-
-  const colorScale=d3.scaleSequential().domain([-1,1]).interpolator(d3.interpolateRdYlGn);
-
-  // Only lower triangle
-  for(let r=0;r<n;r++){
-    for(let c=0;c<=r;c++){
-      const val=DATA.corrMatrix[r][c];
-      const rect=g.append('rect')
-        .attr('x',c*cellSize).attr('y',r*cellSize)
-        .attr('width',cellSize-1).attr('height',cellSize-1).attr('rx',2)
-        .attr('fill',colorScale(val)).style('cursor','pointer')
-        .on('mouseover',evt=>showTip(evt,`<strong>${DATA.corrFeatures[r]} × ${DATA.corrFeatures[c]}</strong><br/>r = ${val.toFixed(2)}`))
-        .on('mousemove',moveTip).on('mouseout',hideTip);
-
-      g.append('text')
-        .attr('x',c*cellSize+cellSize/2).attr('y',r*cellSize+cellSize/2+3.5)
-        .attr('text-anchor','middle').style('font-size','0.55rem').style('fill',Math.abs(val)>0.35?'white':C.dark)
-        .style('font-weight','600').text(val.toFixed(2));
-    }
-  }
-
-  // X labels (top)
-  DATA.corrFeatures.forEach((f,i)=>{
-    g.append('text').attr('x',i*cellSize+cellSize/2).attr('y',-8)
-      .attr('text-anchor','middle').attr('transform',`rotate(-45,${i*cellSize+cellSize/2},-8)`)
-      .style('font-size','0.62rem').style('fill',C.dark).text(f);
-  });
-  // Y labels
-  DATA.corrFeatures.forEach((f,i)=>{
-    g.append('text').attr('x',-6).attr('y',i*cellSize+cellSize/2+3.5)
-      .attr('text-anchor','end').style('font-size','0.62rem').style('fill',C.dark).text(f);
-  });
-})();
-
-/* --- TEMPORAL 2×2 --- */
-// color can be a string OR a function (d, i) => colorString
-function buildBarH(svgId, data, labelKey, valueKey, maxVal, color, yLabel, fmtFn){
-  const svg=d3.select(svgId); const margin={top:18,right:30,bottom:36,left:72};
-  const w=420-margin.left-margin.right, h=240-margin.top-margin.bottom;
-  const g=svg.append('g').attr('transform',`translate(${margin.left},${margin.top})`);
-  const x=d3.scaleBand().domain(data.map(d=>d[labelKey])).range([0,w]).padding(0.28);
-  const y=d3.scaleLinear().domain([0,maxVal]).range([h,0]);
-  const colorFn = typeof color === 'function' ? color : () => color;
-  g.append('g').attr('transform',`translate(0,${h})`).call(d3.axisBottom(x).tickSize(0))
-    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('text').style('fill','rgba(255,255,255,0.55)').style('font-size','0.7rem');});
-  g.append('g').call(d3.axisLeft(y).ticks(4).tickFormat(fmtFn||String).tickSize(-w))
-    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('.tick line').attr('stroke','rgba(255,255,255,0.08)'); ax.selectAll('text').style('fill','rgba(255,255,255,0.5)').style('font-size','0.68rem');});
-  g.selectAll('rect').data(data).enter().append('rect')
-    .attr('x',d=>x(d[labelKey])).attr('width',x.bandwidth()).attr('y',h).attr('height',0).attr('rx',4)
-    .attr('fill',(d,i)=>colorFn(d,i)).style('cursor','pointer')
-    .on('mouseover',(evt,d)=>showTip(evt,`<strong>${d[labelKey]}</strong>: ${fmtFn?fmtFn(d[valueKey]):d[valueKey]}`))
-    .on('mousemove',moveTip).on('mouseout',hideTip)
-    .transition().duration(600).delay((_,i)=>i*60).attr('y',d=>y(d[valueKey])).attr('height',d=>h-y(d[valueKey]));
-  if(yLabel){
-    g.append('text').attr('transform','rotate(-90)').attr('x',-h/2).attr('y',-52)
-      .attr('text-anchor','middle').style('font-size','0.65rem').style('fill','rgba(255,255,255,0.4)').text(yLabel);
-  }
-}
-
-// Day of week
-buildBarH('#svg-dayofweek',
-  [{l:'Mon',v:20.1},{l:'Tue',v:20.5},{l:'Wed',v:20.7},{l:'Thu',v:20.5},{l:'Fri',v:20.7},{l:'Sat',v:19.4}],
-  'l','v',24,C.main,'No-Show Rate (%)',v=>v+'%');
-
-// Month line chart
-(function buildMonth(){
-  const svg=d3.select('#svg-month'); const margin={top:18,right:24,bottom:36,left:52};
-  const w=420-margin.left-margin.right, h=240-margin.top-margin.bottom;
-  const g=svg.append('g').attr('transform',`translate(${margin.left},${margin.top})`);
-  const mData=[{m:'Jan',v:20.4},{m:'Feb',v:19.8},{m:'Mar',v:20.1},{m:'Apr',v:20.6},{m:'May',v:21.2},{m:'Jun',v:19.6}];
-  const x=d3.scaleBand().domain(mData.map(d=>d.m)).range([0,w]).padding(0);
-  const xC=m=>x(m)+x.bandwidth()/2;
-  const y=d3.scaleLinear().domain([18,23]).range([h,0]);
-  g.append('g').attr('transform',`translate(0,${h})`).call(d3.axisBottom(x).tickSize(0))
-    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('text').style('fill','rgba(255,255,255,0.55)').style('font-size','0.75rem');});
-  g.append('g').call(d3.axisLeft(y).ticks(4).tickFormat(d=>d+'%').tickSize(-w))
-    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('.tick line').attr('stroke','rgba(255,255,255,0.08)'); ax.selectAll('text').style('fill','rgba(255,255,255,0.5)').style('font-size','0.68rem');});
-
-  const area=d3.area().x(d=>xC(d.m)).y0(h).y1(d=>y(d.v)).curve(d3.curveCatmullRom);
-  const line=d3.line().x(d=>xC(d.m)).y(d=>y(d.v)).curve(d3.curveCatmullRom);
-
-  g.append('path').datum(mData).attr('d',area).attr('fill',C.main).attr('fill-opacity',0.2);
-  g.append('path').datum(mData).attr('d',line).attr('fill','none').attr('stroke',C.main).attr('stroke-width',2.5);
-  g.selectAll('circle').data(mData).enter().append('circle')
-    .attr('cx',d=>xC(d.m)).attr('cy',d=>y(d.v)).attr('r',5)
-    .attr('fill','white').attr('stroke',C.main).attr('stroke-width',2).style('cursor','pointer')
-    .on('mouseover',(evt,d)=>showTip(evt,`<strong>${d.m}</strong>: ${d.v}%`))
-    .on('mousemove',moveTip).on('mouseout',hideTip);
-  mData.forEach(d=>{
-    g.append('text').attr('x',xC(d.m)).attr('y',y(d.v)-8).attr('text-anchor','middle')
-      .style('font-size','0.68rem').style('fill','rgba(255,255,255,0.7)').style('font-weight','600').text(d.v+'%');
-  });
-})();
-
-// Wait distribution histogram
-(function buildWaitDist(){
-  const svg=d3.select('#svg-waitdist'); const margin={top:18,right:24,bottom:36,left:52};
-  const w=420-margin.left-margin.right, h=240-margin.top-margin.bottom;
-  const g=svg.append('g').attr('transform',`translate(${margin.left},${margin.top})`);
-  const x=d3.scaleLinear().domain([0,95]).range([0,w]);
-  const y=d3.scaleLinear().domain([0,13500]).range([h,0]);
-  const bw=(w/DATA.waitHistBins.length)-1;
-  g.append('g').attr('transform',`translate(0,${h})`).call(d3.axisBottom(x).ticks(6).tickFormat(d=>d+'d').tickSize(0))
-    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('text').style('fill','rgba(255,255,255,0.55)').style('font-size','0.7rem');});
-  g.append('g').call(d3.axisLeft(y).ticks(4).tickFormat(d=>d3.format('.1s')(d)).tickSize(-w))
-    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('.tick line').attr('stroke','rgba(255,255,255,0.08)'); ax.selectAll('text').style('fill','rgba(255,255,255,0.5)').style('font-size','0.68rem');});
-  const cs=d3.scaleLinear().domain([0,90]).range([C.light,C.deep]);
-  g.selectAll('rect').data(DATA.waitHistBins).enter().append('rect')
-    .attr('x',d=>x(d.x)).attr('width',bw).attr('y',h).attr('height',0).attr('fill',d=>cs(d.x)).attr('rx',2).style('cursor','pointer')
-    .on('mouseover',(evt,d)=>showTip(evt,`<strong>~${d.x}–${d.x+5} days</strong><br/>Count: ${d3.format(',')(d.y)}`))
-    .on('mousemove',moveTip).on('mouseout',hideTip)
-    .transition().duration(600).delay((_,i)=>i*30).attr('y',d=>y(d.y)).attr('height',d=>h-y(d.y));
-
-  // Median line
-  g.append('line').attr('x1',x(15)).attr('x2',x(15)).attr('y1',0).attr('y2',h)
-    .attr('stroke',C.light).attr('stroke-width',2).attr('stroke-dasharray','5,4');
-  g.append('text').attr('x',x(15)+3).attr('y',12).style('font-size','0.65rem').style('fill',C.light).text('Median: 15d');
-})();
-
-// Wait bins bar (gradient color per index)
-(function(){
-  const cs=d3.scaleLinear().domain([0,DATA.byWait.length-1]).range([C.mint,C.deep]);
-  buildBarH('#svg-waitbins', DATA.byWait, 'bucket', 'noshow', 45,
-    (d,i)=>cs(i), 'No-Show Rate (%)', v=>v+'%');
-})();
-
-/* --- FEATURE COMBINATIONS --- */
-
-// Age × SMS grouped bar
-(function buildAgeSMS(){
-  const svg=d3.select('#svg-age-sms'); const margin={top:20,right:10,bottom:50,left:40};
-  const w=340-margin.left-margin.right, h=280-margin.top-margin.bottom;
-  const g=svg.append('g').attr('transform',`translate(${margin.left},${margin.top})`);
-  const groups=DATA.ageGroups; const n=groups.length;
-  const x0=d3.scaleBand().domain(groups).range([0,w]).padding(0.2);
-  const x1=d3.scaleBand().domain(['noSMS','withSMS']).range([0,x0.bandwidth()]).padding(0.05);
-  const y=d3.scaleLinear().domain([0,38]).range([h,0]);
-  g.append('g').attr('transform',`translate(0,${h})`).call(d3.axisBottom(x0).tickSize(0))
-    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('text').style('fill',C.muted).style('font-size','0.65rem').attr('transform','rotate(-35)').attr('text-anchor','end');});
-  g.append('g').call(d3.axisLeft(y).ticks(4).tickFormat(d=>d+'%').tickSize(-w))
-    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('.tick line').attr('stroke','#e0f5f5'); ax.selectAll('text').style('fill',C.muted).style('font-size','0.65rem');});
-
-  groups.forEach((ag,i)=>{
-    const gx=g.append('g').attr('transform',`translate(${x0(ag)},0)`);
-    [DATA.ageSMSnoSMS[i],DATA.ageSMSwithSMS[i]].forEach((v,j)=>{
-      gx.append('rect').attr('x',x1(j===0?'noSMS':'withSMS')).attr('width',x1.bandwidth())
-        .attr('y',h).attr('height',0).attr('rx',3).attr('fill',j===0?C.light:C.main).style('cursor','pointer')
-        .on('mouseover',evt=>showTip(evt,`Age ${ag} — ${j===0?'No SMS':'SMS'}: ${v}%`))
-        .on('mousemove',moveTip).on('mouseout',hideTip)
-        .transition().duration(600).delay(i*40+j*80).attr('y',y(v)).attr('height',h-y(v));
-    });
-  });
-
-  const leg=svg.append('g').attr('transform',`translate(${margin.left},${h+margin.top+38})`);
-  ['No SMS','SMS Received'].forEach((l,i)=>{
-    const gx=leg.append('g').attr('transform',`translate(${i*100},0)`);
-    gx.append('rect').attr('width',9).attr('height',9).attr('rx',2).attr('fill',i===0?C.light:C.main);
-    gx.append('text').attr('x',13).attr('y',8).style('font-size','0.7rem').style('fill',C.muted).text(l);
-  });
-})();
-
-// Gender × condition
-(function buildGenderCond(){
-  const svg=d3.select('#svg-gender-cond'); const margin={top:20,right:10,bottom:50,left:90};
-  const w=340-margin.left-margin.right, h=280-margin.top-margin.bottom;
-  const g=svg.append('g').attr('transform',`translate(${margin.left},${margin.top})`);
-  const conds=DATA.genderCondLabels;
-  const x0=d3.scaleBand().domain(conds).range([0,w]).padding(0.2);
-  const x1=d3.scaleBand().domain(['F','M']).range([0,x0.bandwidth()]).padding(0.05);
-  const y=d3.scaleLinear().domain([0,30]).range([h,0]);
-  g.append('g').attr('transform',`translate(0,${h})`).call(d3.axisBottom(x0).tickSize(0))
-    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('text').style('fill',C.muted).style('font-size','0.65rem').attr('transform','rotate(-30)').attr('text-anchor','end');});
-  g.append('g').call(d3.axisLeft(y).ticks(4).tickFormat(d=>d+'%').tickSize(-w))
-    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('.tick line').attr('stroke','#e0f5f5'); ax.selectAll('text').style('fill',C.muted).style('font-size','0.65rem');});
-
-  conds.forEach((c,i)=>{
-    const gx=g.append('g').attr('transform',`translate(${x0(c)},0)`);
-    [DATA.genderCondF[i],DATA.genderCondM[i]].forEach((v,j)=>{
-      gx.append('rect').attr('x',x1(j===0?'F':'M')).attr('width',x1.bandwidth())
-        .attr('y',h).attr('height',0).attr('rx',3).attr('fill',j===0?C.main:C.light).style('cursor','pointer')
-        .on('mouseover',evt=>showTip(evt,`${c} — ${j===0?'Female':'Male'}: ${v}%`))
-        .on('mousemove',moveTip).on('mouseout',hideTip)
-        .transition().duration(600).delay(i*50+j*80).attr('y',y(v)).attr('height',h-y(v));
-    });
-  });
-
-  const leg=svg.append('g').attr('transform',`translate(${margin.left},${h+margin.top+38})`);
-  ['Female','Male'].forEach((l,i)=>{
-    const gx=leg.append('g').attr('transform',`translate(${i*80},0)`);
-    gx.append('rect').attr('width',9).attr('height',9).attr('rx',2).attr('fill',i===0?C.main:C.light);
-    gx.append('text').attr('x',13).attr('y',8).style('font-size','0.7rem').style('fill',C.muted).text(l);
-  });
-})();
-
-// Age × Day heatmap
-(function buildAgeDayHeat(){
-  const svg=d3.select('#svg-age-day-heat'); const margin={top:30,right:20,bottom:55,left:50};
-  const w=340-margin.left-margin.right, h=280-margin.top-margin.bottom;
-  const g=svg.append('g').attr('transform',`translate(${margin.left},${margin.top})`);
-  const hd=DATA.ageDayHeat;
-  const cellW=w/hd.days.length, cellH=h/hd.ageGroups.length;
-  const allV=hd.values.flat();
-  const cs=d3.scaleSequential().domain([d3.min(allV),d3.max(allV)]).interpolator(d3.interpolateYlGnBu);
-
-  hd.ageGroups.forEach((ag,r)=>{
-    hd.days.forEach((day,c)=>{
-      const val=hd.values[r][c];
-      g.append('rect').attr('x',c*cellW).attr('y',r*cellH).attr('width',cellW-1).attr('height',cellH-1).attr('rx',2)
-        .attr('fill',cs(val)).style('cursor','pointer')
-        .on('mouseover',evt=>showTip(evt,`Age ${ag} | ${day}: ${val}%`))
-        .on('mousemove',moveTip).on('mouseout',hideTip);
-      if(cellW>28 && cellH>28){
-        g.append('text').attr('x',c*cellW+cellW/2).attr('y',r*cellH+cellH/2+3.5)
-          .attr('text-anchor','middle').style('font-size','0.55rem').style('fill',val>23?'white':C.dark)
-          .style('font-weight','600').text(val.toFixed(0));
-      }
-    });
-  });
-
-  g.append('g').attr('transform',`translate(0,${h})`).call(d3.axisBottom(d3.scaleBand().domain(hd.days).range([0,w])).tickSize(0))
-    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('text').style('fill',C.muted).style('font-size','0.68rem').attr('transform','rotate(-30)').attr('text-anchor','end').attr('dy','0.5em');});
-  g.append('g').call(d3.axisLeft(d3.scaleBand().domain(hd.ageGroups).range([0,h])).tickSize(0))
-    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('text').style('fill',C.muted).style('font-size','0.68rem');});
-})();
-
-/* --- DEMOGRAPHIC COMPARISONS 2×2 --- */
-
-// By gender
-(function buildDemoGender(){
-  const svg=d3.select('#svg-demo-gender'); const margin={top:20,right:30,bottom:36,left:60};
-  const w=380-margin.left-margin.right, h=220-margin.top-margin.bottom;
-  const g=svg.append('g').attr('transform',`translate(${margin.left},${margin.top})`);
-  const data=[{l:'Female',v:20.5},{l:'Male',v:19.6}];
-  const x=d3.scaleBand().domain(data.map(d=>d.l)).range([0,w]).padding(0.35);
-  const y=d3.scaleLinear().domain([0,25]).range([h,0]);
-  g.append('g').attr('transform',`translate(0,${h})`).call(d3.axisBottom(x).tickSize(0))
-    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('text').style('fill',C.dark).style('font-size','0.85rem').style('font-weight','600');});
-  g.append('g').call(d3.axisLeft(y).ticks(4).tickFormat(d=>d+'%').tickSize(-w))
-    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('.tick line').attr('stroke','#e0f5f5'); ax.selectAll('text').style('fill',C.muted).style('font-size','0.72rem');});
-  g.selectAll('rect').data(data).enter().append('rect')
-    .attr('x',d=>x(d.l)).attr('width',x.bandwidth()).attr('y',h).attr('height',0).attr('rx',5)
-    .attr('fill',(_,i)=>i===0?C.main:C.light).style('cursor','pointer')
-    .on('mouseover',(evt,d)=>showTip(evt,`<strong>${d.l}</strong>: ${d.v}%`))
-    .on('mousemove',moveTip).on('mouseout',hideTip)
-    .transition().duration(600).delay((_,i)=>i*120).attr('y',d=>y(d.v)).attr('height',d=>h-y(d.v));
-  g.selectAll('.vl').data(data).enter().append('text').attr('class','vl')
-    .attr('x',d=>x(d.l)+x.bandwidth()/2).attr('y',d=>y(d.v)-6).attr('text-anchor','middle')
-    .style('font-size','0.82rem').style('fill',C.dark).style('font-weight','700').text(d=>d.v+'%')
-    .attr('opacity',0).transition().delay(700).attr('opacity',1);
-})();
-
-// By age group
-(function buildDemoAge(){
-  const svg=d3.select('#svg-demo-age'); const margin={top:20,right:30,bottom:36,left:42};
-  const w=380-margin.left-margin.right, h=220-margin.top-margin.bottom;
-  const g=svg.append('g').attr('transform',`translate(${margin.left},${margin.top})`);
-  const cs=['#d0faf8','#a7f3d0','#1ab5b0','#0e9490','#065f5c','#043a38'];
-  const data=DATA.byAge.map(d=>({l:d.group,v:d.noshow}));
-  const x=d3.scaleBand().domain(data.map(d=>d.l)).range([0,w]).padding(0.2);
-  const y=d3.scaleLinear().domain([0,32]).range([h,0]);
-  g.append('g').attr('transform',`translate(0,${h})`).call(d3.axisBottom(x).tickSize(0))
-    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('text').style('fill',C.muted).style('font-size','0.68rem');});
-  g.append('g').call(d3.axisLeft(y).ticks(4).tickFormat(d=>d+'%').tickSize(-w))
-    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('.tick line').attr('stroke','#e0f5f5'); ax.selectAll('text').style('fill',C.muted).style('font-size','0.68rem');});
-  g.selectAll('rect').data(data).enter().append('rect')
-    .attr('x',d=>x(d.l)).attr('width',x.bandwidth()).attr('y',h).attr('height',0).attr('rx',3)
-    .attr('fill',(_,i)=>cs[Math.floor(i/1.5)]||C.dark).style('cursor','pointer')
-    .on('mouseover',(evt,d)=>showTip(evt,`Age ${d.l}: ${d.v}%`))
-    .on('mousemove',moveTip).on('mouseout',hideTip)
-    .transition().duration(600).delay((_,i)=>i*60).attr('y',d=>y(d.v)).attr('height',d=>h-y(d.v));
-})();
-
-// Diverging chart
-(function buildDemoDiverge(){
-  const svg=d3.select('#svg-demo-diverge'); const margin={top:14,right:50,bottom:14,left:108};
-  const w=380-margin.left-margin.right, h=260-margin.top-margin.bottom;
-  const g=svg.append('g').attr('transform',`translate(${margin.left},${margin.top})`);
-  const data=DATA.divergeData;
-  const x=d3.scaleLinear().domain([-6,10]).range([0,w]);
-  const y=d3.scaleBand().domain(data.map(d=>d.label)).range([0,h]).padding(0.28);
-  g.append('g').call(d3.axisLeft(y).tickSize(0))
-    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('text').style('fill',C.dark).style('font-size','0.78rem');});
-  g.append('line').attr('x1',x(0)).attr('x2',x(0)).attr('y1',0).attr('y2',h).attr('stroke',C.dark).attr('stroke-width',1.5);
-  g.append('g').attr('transform',`translate(0,${h})`).call(d3.axisBottom(x).ticks(5).tickFormat(d=>(d>0?'+':'')+d+'pp').tickSize(0))
-    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('text').style('fill',C.muted).style('font-size','0.65rem');});
-
-  g.selectAll('rect').data(data).enter().append('rect')
-    .attr('x',d=>d.diff>=0?x(0):x(d.diff)).attr('y',d=>y(d.label)).attr('height',y.bandwidth())
-    .attr('width',0).attr('rx',3)
-    .attr('fill',d=>d.diff>0?C.dark:C.light).style('cursor','pointer')
-    .on('mouseover',(evt,d)=>showTip(evt,`<strong>${d.label}</strong>: ${d.diff>0?'+':''}${d.diff}pp vs avg`))
-    .on('mousemove',moveTip).on('mouseout',hideTip)
-    .transition().duration(600).delay((_,i)=>i*70)
-    .attr('width',d=>Math.abs(x(d.diff)-x(0)));
-  g.selectAll('.dvl').data(data).enter().append('text').attr('class','dvl')
-    .attr('x',d=>d.diff>=0?x(d.diff)+4:x(d.diff)-4).attr('y',d=>y(d.label)+y.bandwidth()/2+4)
-    .attr('text-anchor',d=>d.diff>=0?'start':'end').style('font-size','0.7rem').style('fill',C.dark).style('font-weight','600')
-    .text(d=>(d.diff>0?'+':'')+d.diff+'pp').attr('opacity',0).transition().delay(700).attr('opacity',1);
-})();
-
-// Scholarship × gender
-(function buildDemoScholar(){
-  const svg=d3.select('#svg-demo-scholar'); const margin={top:20,right:20,bottom:55,left:42};
-  const w=380-margin.left-margin.right, h=220-margin.top-margin.bottom;
-  const g=svg.append('g').attr('transform',`translate(${margin.left},${margin.top})`);
-  const data=DATA.scholarGender;
-  const x=d3.scaleBand().domain(data.map(d=>d.label)).range([0,w]).padding(0.28);
-  const y=d3.scaleLinear().domain([0,30]).range([h,0]);
-  const fc=[C.main,C.light,C.dark,'#1ab5b0'];
-  g.append('g').attr('transform',`translate(0,${h})`).call(d3.axisBottom(x).tickSize(0))
-    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('text').style('fill',C.dark).style('font-size','0.72rem').attr('transform','rotate(-20)').attr('text-anchor','end');});
-  g.append('g').call(d3.axisLeft(y).ticks(4).tickFormat(d=>d+'%').tickSize(-w))
-    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('.tick line').attr('stroke','#e0f5f5'); ax.selectAll('text').style('fill',C.muted).style('font-size','0.68rem');});
-  g.selectAll('rect').data(data).enter().append('rect')
-    .attr('x',d=>x(d.label)).attr('width',x.bandwidth()).attr('y',h).attr('height',0).attr('rx',4)
-    .attr('fill',(_,i)=>fc[i]).style('cursor','pointer')
-    .on('mouseover',(evt,d)=>showTip(evt,`<strong>${d.label}</strong>: ${d.val}%`))
-    .on('mousemove',moveTip).on('mouseout',hideTip)
-    .transition().duration(600).delay((_,i)=>i*100).attr('y',d=>y(d.val)).attr('height',d=>h-y(d.val));
-  g.selectAll('.svl').data(data).enter().append('text').attr('class','svl')
-    .attr('x',d=>x(d.label)+x.bandwidth()/2).attr('y',d=>y(d.val)-5).attr('text-anchor','middle')
-    .style('font-size','0.75rem').style('fill',C.dark).style('font-weight','700').text(d=>d.val+'%')
-    .attr('opacity',0).transition().delay(700).attr('opacity',1);
-})();
-
-/* --- AGE BOX PLOT --- */
-(function buildBoxPlot(){
-  const svg=d3.select('#svg-boxplot'); const margin={top:24,right:24,bottom:40,left:52};
-  const w=400-margin.left-margin.right, h=280-margin.top-margin.bottom;
-  const g=svg.append('g').attr('transform',`translate(${margin.left},${margin.top})`);
-  const groups=['No Show','Showed Up']; const stats=[DATA.boxNoShow,DATA.boxShowed];
-  const x=d3.scaleBand().domain(groups).range([0,w]).padding(0.4);
-  const y=d3.scaleLinear().domain([0,95]).range([h,0]);
-  const cols=[C.light,C.main];
-
-  g.append('g').attr('transform',`translate(0,${h})`).call(d3.axisBottom(x).tickSize(0))
-    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('text').style('fill','rgba(255,255,255,0.7)').style('font-size','0.85rem').style('font-weight','600').style('font-family','DM Sans,sans-serif');});
-  g.append('g').call(d3.axisLeft(y).ticks(6).tickSize(-w))
-    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('.tick line').attr('stroke','rgba(255,255,255,0.08)'); ax.selectAll('text').style('fill','rgba(255,255,255,0.5)').style('font-size','0.72rem');});
-  g.append('text').attr('transform','rotate(-90)').attr('x',-h/2).attr('y',-38)
-    .attr('text-anchor','middle').style('font-size','0.7rem').style('fill','rgba(255,255,255,0.45)').text('Age');
-
-  stats.forEach((s,i)=>{
-    const cx=x(groups[i])+x.bandwidth()/2; const bw=x.bandwidth();
-    // whiskers
-    g.append('line').attr('x1',cx).attr('x2',cx).attr('y1',y(s.min)).attr('y2',y(s.q1)).attr('stroke','rgba(255,255,255,0.4)').attr('stroke-width',1.5);
-    g.append('line').attr('x1',cx).attr('x2',cx).attr('y1',y(s.q3)).attr('y2',y(s.max)).attr('stroke','rgba(255,255,255,0.4)').attr('stroke-width',1.5);
-    g.append('line').attr('x1',cx-8).attr('x2',cx+8).attr('y1',y(s.min)).attr('y2',y(s.min)).attr('stroke','rgba(255,255,255,0.4)').attr('stroke-width',1.5);
-    g.append('line').attr('x1',cx-8).attr('x2',cx+8).attr('y1',y(s.max)).attr('y2',y(s.max)).attr('stroke','rgba(255,255,255,0.4)').attr('stroke-width',1.5);
-    // box
-    g.append('rect').attr('x',cx-bw/2).attr('y',y(s.q3)).attr('width',bw).attr('height',y(s.q1)-y(s.q3))
-      .attr('fill',cols[i]).attr('fill-opacity',0.7).attr('stroke',cols[i]).attr('stroke-width',1.5).attr('rx',4)
-      .style('cursor','pointer').on('mouseover',evt=>showTip(evt,`${groups[i]}<br/>Q1:${s.q1} Med:${s.median} Q3:${s.q3}`))
-      .on('mousemove',moveTip).on('mouseout',hideTip);
-    // median
-    g.append('line').attr('x1',cx-bw/2).attr('x2',cx+bw/2).attr('y1',y(s.median)).attr('y2',y(s.median)).attr('stroke',C.dark).attr('stroke-width',2.5);
-    g.append('text').attr('x',cx).attr('y',y(s.median)-6).attr('text-anchor','middle').style('font-size','0.72rem').style('fill','rgba(255,255,255,0.8)').style('font-weight','600').text(`Median: ${s.median}`);
-  });
-})();
-
-/* --- GENDER COUNT CHART --- */
-(function buildGenderCount(){
-  const svg=d3.select('#svg-gender-count'); const margin={top:24,right:24,bottom:40,left:60};
-  const w=400-margin.left-margin.right, h=280-margin.top-margin.bottom;
-  const g=svg.append('g').attr('transform',`translate(${margin.left},${margin.top})`);
-  const data=DATA.genderCounts;
-  const x0=d3.scaleBand().domain(data.map(d=>d.gender)).range([0,w]).padding(0.3);
-  const x1=d3.scaleBand().domain(['showed','noshow']).range([0,x0.bandwidth()]).padding(0.05);
-  const y=d3.scaleLinear().domain([0,65000]).range([h,0]);
-  const labs=['Showed Up','No Show']; const cols=[C.main,C.light];
-
-  g.append('g').attr('transform',`translate(0,${h})`).call(d3.axisBottom(x0).tickSize(0))
-    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('text').style('fill','rgba(255,255,255,0.7)').style('font-size','0.85rem').style('font-weight','600');});
-  g.append('g').call(d3.axisLeft(y).ticks(5).tickFormat(d=>d3.format('.1s')(d)).tickSize(-w))
-    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('.tick line').attr('stroke','rgba(255,255,255,0.08)'); ax.selectAll('text').style('fill','rgba(255,255,255,0.5)').style('font-size','0.7rem');});
-
-  data.forEach(d=>{
-    const gx=g.append('g').attr('transform',`translate(${x0(d.gender)},0)`);
-    [d.showed,d.noshow].forEach((v,i)=>{
-      gx.append('rect').attr('x',x1(i===0?'showed':'noshow')).attr('width',x1.bandwidth())
-        .attr('y',h).attr('height',0).attr('rx',3).attr('fill',cols[i]).style('cursor','pointer')
-        .on('mouseover',evt=>showTip(evt,`${d.gender} — ${labs[i]}: ${d3.format(',')(v)}`))
-        .on('mousemove',moveTip).on('mouseout',hideTip)
-        .transition().duration(600).delay(i*150).attr('y',y(v)).attr('height',h-y(v));
-      gx.append('text').attr('x',x1(i===0?'showed':'noshow')+x1.bandwidth()/2).attr('y',y(v)-5)
-        .attr('text-anchor','middle').style('font-size','0.68rem').style('fill','rgba(255,255,255,0.75)').style('font-weight','600')
-        .text(d3.format('.1s')(v)).attr('opacity',0).transition().delay(700).attr('opacity',1);
-    });
-  });
-
-  const leg=svg.append('g').attr('transform',`translate(${margin.left},${h+margin.top+28})`);
-  labs.forEach((l,i)=>{
-    const gx=leg.append('g').attr('transform',`translate(${i*120},0)`);
-    gx.append('rect').attr('width',10).attr('height',10).attr('rx',2).attr('fill',cols[i]);
-    gx.append('text').attr('x',14).attr('y',9).style('font-size','0.75rem').style('fill','rgba(255,255,255,0.6)').text(l);
-  });
-})();
-
-/* --- REPEAT BEHAVIOUR --- */
-(function buildRepeatAppt(){
-  const svg=d3.select('#svg-repeat-appt'); const margin={top:16,right:16,bottom:36,left:52};
-  const w=320-margin.left-margin.right, h=240-margin.top-margin.bottom;
-  const g=svg.append('g').attr('transform',`translate(${margin.left},${margin.top})`);
-  const data=DATA.apptPerPatient;
-  const x=d3.scaleBand().domain(data.map(d=>d.n)).range([0,w]).padding(0.2);
-  const y=d3.scaleLinear().domain([0,55000]).range([h,0]);
-  g.append('g').attr('transform',`translate(0,${h})`).call(d3.axisBottom(x).tickSize(0).tickFormat(d=>d===10?'10+':d))
-    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('text').style('fill',C.muted).style('font-size','0.72rem');});
-  g.append('g').call(d3.axisLeft(y).ticks(4).tickFormat(d=>d3.format('.0s')(d)).tickSize(-w))
-    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('.tick line').attr('stroke','#e0f5f5'); ax.selectAll('text').style('fill',C.muted).style('font-size','0.68rem');});
-  g.selectAll('rect').data(data).enter().append('rect')
-    .attr('x',d=>x(d.n)).attr('width',x.bandwidth()).attr('y',h).attr('height',0).attr('rx',3).attr('fill',C.main).style('cursor','pointer')
-    .on('mouseover',(evt,d)=>showTip(evt,`${d.n===10?'10+':d.n} appointments: ${d3.format(',')(d.count)} patients`))
-    .on('mousemove',moveTip).on('mouseout',hideTip)
-    .transition().duration(600).delay((_,i)=>i*60).attr('y',d=>y(d.count)).attr('height',d=>h-y(d.count));
-  g.append('text').attr('x',w/2).attr('y',-4).attr('text-anchor','middle').style('font-size','0.68rem').style('fill',C.muted).text('Number of Appointments');
-})();
-
-(function buildRepeatRate(){
-  const svg=d3.select('#svg-repeat-rate'); const margin={top:16,right:16,bottom:36,left:52};
-  const w=320-margin.left-margin.right, h=240-margin.top-margin.bottom;
-  const g=svg.append('g').attr('transform',`translate(${margin.left},${margin.top})`);
-  const data=[{l:'Single-Visit',v:22.4},{l:'Repeat\nPatients',v:18.9}];
-  const x=d3.scaleBand().domain(data.map(d=>d.l)).range([0,w]).padding(0.4);
-  const y=d3.scaleLinear().domain([0,28]).range([h,0]);
-  g.append('g').attr('transform',`translate(0,${h})`).call(d3.axisBottom(x).tickSize(0))
-    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('text').style('fill',C.muted).style('font-size','0.78rem').call(function(t){ t.each(function(d){ const s=d.split('\n'); d3.select(this).text(''); s.forEach((l,i)=>d3.select(this).append('tspan').attr('x',0).attr('dy',i?'1.1em':0).text(l)); }); });});
-  g.append('g').call(d3.axisLeft(y).ticks(4).tickFormat(d=>d+'%').tickSize(-w))
-    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('.tick line').attr('stroke','#e0f5f5'); ax.selectAll('text').style('fill',C.muted).style('font-size','0.68rem');});
-  g.selectAll('rect').data(data).enter().append('rect')
-    .attr('x',d=>x(d.l)).attr('width',x.bandwidth()).attr('y',h).attr('height',0).attr('rx',5)
-    .attr('fill',(_,i)=>i===0?C.light:C.main).style('cursor','pointer')
-    .on('mouseover',(evt,d)=>showTip(evt,`${d.l}: ${d.v}% avg no-show`))
-    .on('mousemove',moveTip).on('mouseout',hideTip)
-    .transition().duration(600).delay((_,i)=>i*150).attr('y',d=>y(d.v)).attr('height',d=>h-y(d.v));
-  g.selectAll('.rl').data(data).enter().append('text').attr('class','rl')
-    .attr('x',d=>x(d.l)+x.bandwidth()/2).attr('y',d=>y(d.v)-7).attr('text-anchor','middle')
-    .style('font-size','0.85rem').style('fill',C.dark).style('font-weight','700').text(d=>d.v+'%')
-    .attr('opacity',0).transition().delay(700).attr('opacity',1);
-})();
-
-(function buildChronic(){
-  const svg=d3.select('#svg-chronic'); const cx=160, cy=105, ro=75, ri=45;
-  const g=svg.append('g').attr('transform',`translate(0,0)`);
-  const pie=d3.pie().value(d=>d.v).sort(null);
-  const arc=d3.arc().innerRadius(ri).outerRadius(ro).cornerRadius(3).padAngle(0.04);
-  const arcH=d3.arc().innerRadius(ri).outerRadius(ro+8).cornerRadius(3).padAngle(0.04);
-  const data=[{v:78.3,l:'Regular\n(<50% miss)'},{v:21.7,l:'Chronic\n(≥50% miss)'}];
-  const cols=[C.main,C.light];
-  const ga=svg.append('g').attr('transform',`translate(${cx},${cy})`);
-  ga.selectAll('path').data(pie(data)).enter().append('path')
-    .attr('d',arc).attr('fill',(d,i)=>cols[i]).attr('stroke','#f0fdfb').attr('stroke-width',2).style('cursor','pointer')
-    .on('mouseover',function(evt,d){ d3.select(this).attr('d',arcH); showTip(evt,`${d.data.l.replace('\n',' ')}: ${d.data.v}%`); })
-    .on('mousemove',moveTip).on('mouseout',function(){ d3.select(this).attr('d',arc); hideTip(); })
-    .attr('opacity',0).transition().duration(900).delay((d,i)=>i*250).attr('opacity',1);
-  ga.append('text').attr('text-anchor','middle').attr('dy','-0.2em')
-    .style('font-family','DM Serif Display,serif').style('font-size','1.4rem').style('fill',C.dark).text('21.7%');
-  ga.append('text').attr('text-anchor','middle').attr('dy','1.1em')
-    .style('font-size','0.68rem').style('fill',C.muted).text('Chronic');
-
-  const leg=svg.append('g').attr('transform',`translate(${cx-90},${cy+ro+18})`);
-  data.forEach((d,i)=>{
-    const gx=leg.append('g').attr('transform',`translate(${i*130},0)`);
-    gx.append('rect').attr('width',10).attr('height',10).attr('rx',2).attr('fill',cols[i]);
-    gx.append('text').attr('x',14).attr('y',9).style('font-size','0.7rem').style('fill',C.dark).text(d.l.split('\n')[0]);
-  });
-
-  svg.append('text').attr('x',cx).attr('y',cy+ro+58).attr('text-anchor','middle')
-    .style('font-size','0.78rem').style('fill',C.muted)
-    .text('21,872 patients miss ≥50% of appts');
-})();
-
-/* --- OUTLIER DETECTION --- */
-(function buildOutlierAge(){
-  const svg=d3.select('#svg-outlier-age'); const margin={top:16,right:16,bottom:36,left:42};
-  const w=320-margin.left-margin.right, h=240-margin.top-margin.bottom;
-  const g=svg.append('g').attr('transform',`translate(${margin.left},${margin.top})`);
-  // Simulate age scatter with outliers >100
-  const pts=[]; for(let i=0;i<200;i++) pts.push({i,age:Math.max(0,Math.min(95,Math.floor(Math.random()*100))),out:false});
-  const outliers=[{i:210,age:102},{i:220,age:105},{i:230,age:108},{i:240,age:110},{i:250,age:115}];
-  const all=[...pts,...outliers.map(o=>({...o,out:true}))];
-  const x=d3.scaleLinear().domain([0,260]).range([0,w]);
-  const y=d3.scaleLinear().domain([0,120]).range([h,0]);
-  const mean=37.1, sd=23.5;
-  const upperZ=mean+3*sd, lowerZ=Math.max(0,mean-3*sd);
-  g.append('g').attr('transform',`translate(0,${h})`).call(d3.axisBottom(x).ticks(4).tickFormat(d=>d).tickSize(0))
-    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('text').style('fill',C.muted).style('font-size','0.65rem');});
-  g.append('g').call(d3.axisLeft(y).ticks(5).tickSize(-w))
-    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('.tick line').attr('stroke','#e0f5f5'); ax.selectAll('text').style('fill',C.muted).style('font-size','0.65rem');});
-  g.selectAll('circle').data(all).enter().append('circle')
-    .attr('cx',d=>x(d.i)).attr('cy',d=>y(d.age)).attr('r',d=>d.out?5:2)
-    .attr('fill',d=>d.out?C.dark:C.light).attr('fill-opacity',d=>d.out?1:0.5).style('cursor','pointer')
-    .on('mouseover',(evt,d)=>showTip(evt,`Age: ${d.age}${d.out?' <b>(Outlier)</b>':''}`))
-    .on('mousemove',moveTip).on('mouseout',hideTip);
-  g.append('line').attr('x1',0).attr('x2',w).attr('y1',y(upperZ)).attr('y2',y(upperZ)).attr('stroke',C.dark).attr('stroke-dasharray','5,4').attr('stroke-width',1.5);
-  g.append('line').attr('x1',0).attr('x2',w).attr('y1',y(lowerZ)).attr('y2',y(lowerZ)).attr('stroke',C.dark).attr('stroke-dasharray','5,4').attr('stroke-width',1.5);
-  g.append('text').attr('x',w-2).attr('y',y(upperZ)-4).attr('text-anchor','end').style('font-size','0.62rem').style('fill',C.dark).text('+3σ boundary');
-  g.append('text').attr('x',w-2).attr('y',y(lowerZ)+12).attr('text-anchor','end').style('font-size','0.62rem').style('fill',C.dark).text('-3σ boundary');
-  svg.append('text').attr('x',margin.left+4).attr('y',16).style('font-size','0.7rem').style('fill',C.muted).text('5 outliers detected (age > 100)');
-})();
-
-(function buildOutlierWait(){
-  const svg=d3.select('#svg-outlier-wait'); const margin={top:16,right:16,bottom:36,left:42};
-  const w=320-margin.left-margin.right, h=240-margin.top-margin.bottom;
-  const g=svg.append('g').attr('transform',`translate(${margin.left},${margin.top})`);
-  const normalBins=[{x:0,y:7200},{x:10,y:9100},{x:20,y:6300},{x:30,y:4100},{x:40,y:2800}];
-  const outBins=[{x:50,y:1800},{x:60,y:1500},{x:70,y:1100},{x:80,y:850},{x:90,y:600}];
-  const all=[...normalBins,...outBins];
-  const x=d3.scaleLinear().domain([0,100]).range([0,w]);
-  const y=d3.scaleLinear().domain([0,10000]).range([h,0]);
-  const bw=w/all.length-1;
-  g.append('g').attr('transform',`translate(0,${h})`).call(d3.axisBottom(x).ticks(5).tickFormat(d=>d+'d').tickSize(0))
-    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('text').style('fill',C.muted).style('font-size','0.65rem');});
-  g.append('g').call(d3.axisLeft(y).ticks(4).tickFormat(d=>d3.format('.0s')(d)).tickSize(-w))
-    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('.tick line').attr('stroke','#e0f5f5'); ax.selectAll('text').style('fill',C.muted).style('font-size','0.65rem');});
-  g.selectAll('.nb').data(normalBins).enter().append('rect').attr('class','nb')
-    .attr('x',d=>x(d.x)).attr('width',bw).attr('y',h).attr('height',0).attr('fill',C.main).attr('rx',2).style('cursor','pointer')
-    .on('mouseover',(evt,d)=>showTip(evt,`${d.x}–${d.x+10}d: ${d3.format(',')(d.y)} (Normal)`))
-    .on('mousemove',moveTip).on('mouseout',hideTip)
-    .transition().duration(600).delay((_,i)=>i*50).attr('y',d=>y(d.y)).attr('height',d=>h-y(d.y));
-  g.selectAll('.ob').data(outBins).enter().append('rect').attr('class','ob')
-    .attr('x',d=>x(d.x)).attr('width',bw).attr('y',h).attr('height',0).attr('fill',C.dark).attr('rx',2).style('cursor','pointer')
-    .on('mouseover',(evt,d)=>showTip(evt,`${d.x}–${d.x+10}d: ${d3.format(',')(d.y)} (Outlier)`))
-    .on('mousemove',moveTip).on('mouseout',hideTip)
-    .transition().duration(600).delay((_,i)=>i*50+300).attr('y',d=>y(d.y)).attr('height',d=>h-y(d.y));
-
-  const iqrFence=45;
-  g.append('line').attr('x1',x(iqrFence)).attr('x2',x(iqrFence)).attr('y1',0).attr('y2',h)
-    .attr('stroke',C.light).attr('stroke-width',2).attr('stroke-dasharray','5,4');
-  g.append('text').attr('x',x(iqrFence)+3).attr('y',10).style('font-size','0.62rem').style('fill',C.light).text('IQR fence');
-
-  const leg=svg.append('g').attr('transform',`translate(${margin.left},${h+margin.top+26})`);
-  [{l:'Normal',c:C.main},{l:'Outlier (>IQR)',c:C.dark}].forEach((d,i)=>{
-    const gx=leg.append('g').attr('transform',`translate(${i*110},0)`);
-    gx.append('rect').attr('width',9).attr('height',9).attr('rx',2).attr('fill',d.c);
-    gx.append('text').attr('x',13).attr('y',8).style('font-size','0.68rem').style('fill',C.muted).text(d.l);
-  });
-})();
-
-(function buildOutlierNeigh(){
-  const svg=d3.select('#svg-outlier-neigh'); const margin={top:16,right:16,bottom:40,left:42};
-  const w=320-margin.left-margin.right, h=240-margin.top-margin.bottom;
-  const g=svg.append('g').attr('transform',`translate(${margin.left},${margin.top})`);
-  const data=DATA.neighOutlier;
-  const meanR=20.3, sigmaR=4.8;
-  const upper2=meanR+2*sigmaR, lower2=meanR-2*sigmaR;
-  const x=d3.scaleLinear().domain([0,16000]).range([0,w]);
-  const y=d3.scaleLinear().domain([0,50]).range([h,0]);
-  g.append('g').attr('transform',`translate(0,${h})`).call(d3.axisBottom(x).ticks(4).tickFormat(d=>d3.format('.0s')(d)).tickSize(0))
-    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('text').style('fill',C.muted).style('font-size','0.65rem');});
-  g.append('g').call(d3.axisLeft(y).ticks(5).tickFormat(d=>d+'%').tickSize(-w))
-    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('.tick line').attr('stroke','#e0f5f5'); ax.selectAll('text').style('fill',C.muted).style('font-size','0.65rem');});
-
-  [upper2,lower2].forEach(val=>{
-    g.append('line').attr('x1',0).attr('x2',w).attr('y1',y(val)).attr('y2',y(val))
-      .attr('stroke',C.light).attr('stroke-dasharray','5,4').attr('stroke-width',1.5);
-  });
-  g.append('text').attr('x',w-2).attr('y',y(upper2)-4).attr('text-anchor','end').style('font-size','0.6rem').style('fill',C.dark).text('+2σ');
-  g.append('text').attr('x',w-2).attr('y',y(lower2)+12).attr('text-anchor','end').style('font-size','0.6rem').style('fill',C.dark).text('-2σ');
-
-  g.selectAll('circle').data(data).enter().append('circle')
-    .attr('cx',d=>x(d.total)).attr('cy',d=>y(d.rate)).attr('r',d=>d.outlier?7:4)
-    .attr('fill',d=>d.outlier?C.dark:C.main).attr('fill-opacity',d=>d.outlier?1:0.6)
-    .attr('stroke',d=>d.outlier?C.dark:'none').attr('stroke-width',1.5).style('cursor','pointer')
-    .on('mouseover',(evt,d)=>showTip(evt,`<strong>${d.name}</strong><br/>Rate: ${d.rate}%<br/>Total: ${d3.format(',')(d.total)}${d.outlier?' ⚠️ Outlier':''}`))
-    .on('mousemove',moveTip).on('mouseout',hideTip);
-
-  data.filter(d=>d.outlier).forEach(d=>{
-    g.append('text').attr('x',x(d.total)+8).attr('y',y(d.rate)+4)
-      .style('font-size','0.62rem').style('fill',C.dark).style('font-weight','600').text(d.name.split(' ')[0]);
-  });
-  g.append('text').attr('x',w/2).attr('y',h+28).attr('text-anchor','middle').style('font-size','0.65rem').style('fill',C.muted).text('Total Appointments');
-  g.append('text').attr('transform','rotate(-90)').attr('x',-h/2).attr('y',-30).attr('text-anchor','middle').style('font-size','0.65rem').style('fill',C.muted).text('No-Show Rate (%)');
-})();
-
-/* ══════════ INTERACTIVE CHART ══════════ */
+/* INTERACTIVE LOGIC */
 let currentSplit='gender', currentMetric='noshow_rate';
-document.querySelectorAll('#split-group button').forEach(b=>{
-  b.addEventListener('click',()=>{ document.querySelectorAll('#split-group button').forEach(x=>x.classList.remove('active')); b.classList.add('active'); currentSplit=b.dataset.split; renderInteractive(); });
-});
-document.querySelectorAll('#metric-group button').forEach(b=>{
-  b.addEventListener('click',()=>{ document.querySelectorAll('#metric-group button').forEach(x=>x.classList.remove('active')); b.classList.add('active'); currentMetric=b.dataset.metric; renderInteractive(); });
-});
-
 function renderInteractive(){
   const data=DATA[currentSplit]; const svg=d3.select('#svg-interactive'); svg.selectAll('*').remove();
-  const margin={top:24,right:24,bottom:44,left:56}; const W=760,H=360;
-  const w=W-margin.left-margin.right, h=H-margin.top-margin.bottom;
+  const margin={top:30,right:30,bottom:60,left:70}; const w=760-margin.left-margin.right, h=360-margin.top-margin.bottom;
   const g=svg.append('g').attr('transform',`translate(${margin.left},${margin.top})`);
-  const maxV=d3.max(data,d=>d[currentMetric])*1.2;
-  const yLabel=currentMetric==='noshow_rate'?'No-Show Rate (%)':'Appointments';
-  const fmt=currentMetric==='noshow_rate'?v=>v.toFixed(1)+'%':v=>v.toLocaleString();
-  const x=d3.scaleBand().domain(data.map(d=>d.label)).range([0,w]).padding(0.35);
-  const y=d3.scaleLinear().domain([0,maxV]).range([h,0]);
-  g.append('g').attr('transform',`translate(0,${h})`).call(d3.axisBottom(x).tickSize(0))
-    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('text').style('fill','rgba(255,255,255,0.6)').style('font-size','0.85rem').style('font-family','DM Sans,sans-serif');});
-  g.append('g').call(d3.axisLeft(y).ticks(4).tickFormat(currentMetric==='noshow_rate'?v=>v+'%':v=>v.toLocaleString()).tickSize(-w))
-    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('.tick line').attr('stroke','rgba(255,255,255,0.06)'); ax.selectAll('text').style('fill','rgba(255,255,255,0.45)').style('font-size','0.72rem').style('font-family','DM Sans,sans-serif');});
-  g.append('text').attr('transform','rotate(-90)').attr('x',-h/2).attr('y',-44).attr('text-anchor','middle').style('font-size','0.75rem').style('fill','rgba(255,255,255,0.4)').text(yLabel);
+  const x=d3.scaleBand().domain(data.map(d=>d.label)).range([0,w]).padding(0.3);
+  const y=d3.scaleLinear().domain([0,d3.max(data,d=>d[currentMetric])*1.2]).range([h,0]);
+  g.append('g').attr('transform',`translate(0,${h})`).call(d3.axisBottom(x)).selectAll('text').attr('transform','rotate(-20)').attr('text-anchor','end');
+  g.append('g').call(d3.axisLeft(y));
   g.selectAll('rect').data(data).enter().append('rect')
-    .attr('x',d=>x(d.label)).attr('width',x.bandwidth()).attr('y',h).attr('height',0).attr('rx',6)
-    .attr('fill',(_,i)=>i%2===0?C.main:C.light).style('cursor','pointer')
-    .on('mouseover',(evt,d)=>showTip(evt,`<strong>${d.label}</strong><br/>${yLabel}: ${fmt(d[currentMetric])}`))
-    .on('mousemove',moveTip).on('mouseout',hideTip)
-    .transition().duration(550).delay((_,i)=>i*80).attr('y',d=>y(d[currentMetric])).attr('height',d=>h-y(d[currentMetric]));
-  g.selectAll('.val-label').data(data).enter().append('text').attr('class','val-label')
-    .attr('x',d=>x(d.label)+x.bandwidth()/2).attr('y',d=>y(d[currentMetric])-8).attr('text-anchor','middle')
-    .style('font-size','0.85rem').style('fill','white').style('font-weight','600').text(d=>fmt(d[currentMetric]))
-    .attr('opacity',0).transition().delay(600).attr('opacity',1);
+    .attr('x',d=>x(d.label)).attr('width',x.bandwidth()).attr('y',d=>y(d[currentMetric])).attr('height',d=>h-y(d[currentMetric])).attr('fill',C.main).attr('rx',6);
 }
+document.querySelectorAll('#split-group button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('#split-group button').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active'); currentSplit=b.dataset.split; renderInteractive();
+}));
+document.querySelectorAll('#metric-group button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('#metric-group button').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active'); currentMetric=b.dataset.metric; renderInteractive();
+}));
 renderInteractive();
 
-/* ══════════ NEIGHBOURHOOD CHART ══════════ */
+/* NEIGHBORHOOD CHART */
 (function buildNeigh(){
   const svg=d3.select('#neigh-chart');
   const data=[...DATA.neighborhoods].sort((a,b)=>a.noshow-b.noshow);
-  const margin={top:10,right:80,bottom:20,left:168};
-  const W=760,H=520; const w=W-margin.left-margin.right, h=H-margin.top-margin.bottom;
+  const margin={top:20,right:80,bottom:40,left:180}; // Wide margin for long names
+  const w=760-margin.left-margin.right, h=520-margin.top-margin.bottom;
   const g=svg.append('g').attr('transform',`translate(${margin.left},${margin.top})`);
-  const x=d3.scaleLinear().domain([0,d3.max(data,d=>d.noshow)*1.15]).range([0,w]);
-  const y=d3.scaleBand().domain(data.map(d=>d.name)).range([0,h]).padding(0.28);
-  const cs=d3.scaleLinear().domain([d3.min(data,d=>d.noshow),d3.max(data,d=>d.noshow)]).range([C.light,C.deep]);
-  g.append('g').attr('transform',`translate(0,${h})`).call(d3.axisBottom(x).ticks(5).tickSize(-h))
-    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('.tick line').attr('stroke','#e0f5f5'); ax.selectAll('text').style('fill',C.muted).style('font-size','0.72rem');});
-  g.append('g').call(d3.axisLeft(y).tickSize(0))
-    .call(ax=>{ax.select('.domain').remove(); ax.selectAll('text').style('fill',C.dark).style('font-size','0.75rem');});
+  const x=d3.scaleLinear().domain([0,d3.max(data,d=>d.noshow)*1.1]).range([0,w]);
+  const y=d3.scaleBand().domain(data.map(d=>d.name)).range([0,h]).padding(0.3);
+  g.append('g').attr('transform',`translate(0,h)`).call(d3.axisBottom(x).ticks(5));
+  g.append('g').call(d3.axisLeft(y));
   g.selectAll('rect').data(data).enter().append('rect')
-    .attr('x',0).attr('y',d=>y(d.name)).attr('height',y.bandwidth()).attr('width',0).attr('rx',3).attr('fill',d=>cs(d.noshow))
-    .style('cursor','pointer')
-    .on('mouseover',(evt,d)=>showTip(evt,`<strong>${d.name}</strong><br/>No-shows: ${d.noshow.toLocaleString()}`))
-    .on('mousemove',moveTip).on('mouseout',hideTip);
-  const obs=new IntersectionObserver(entries=>{
-    entries.forEach(e=>{ if(e.isIntersecting){
-      g.selectAll('rect').transition().duration(700).delay((_,i)=>i*30).attr('width',d=>x(d.noshow));
-      g.selectAll('.bar-label').transition().delay(800).attr('opacity',1);
-      obs.disconnect();
-    }});
-  },{threshold:0.1});
-  obs.observe(document.getElementById('neighborhood'));
-  g.selectAll('.bar-label').data(data).enter().append('text').attr('class','bar-label')
-    .attr('x',d=>x(d.noshow)+6).attr('y',d=>y(d.name)+y.bandwidth()/2+4)
-    .style('font-size','0.72rem').style('fill',C.dark).style('font-weight','600').text(d=>d.noshow.toLocaleString()).attr('opacity',0);
+    .attr('x',0).attr('y',d=>y(d.name)).attr('height',y.bandwidth()).attr('width',d=>x(d.noshow)).attr('fill',C.dark).attr('rx',3);
+})();
+
+/* SCROLLAMA SETUP */
+const scroller=scrollama();
+scroller.setup({step:'#steps .step',offset:0.55})
+  .onStepEnter(({element,index})=>{
+    document.querySelectorAll('.step').forEach(s=>s.classList.remove('is-active'));
+    element.classList.add('is-active');
+    const charts=['chart-donut','chart-age','chart-wait','chart-sms','chart-cond'];
+    charts.forEach((c,i)=>document.getElementById(c).style.display=(i===index?'block':'none'));
+  });
+
+/* WAFFLE */
+(function buildWaffle(){
+  const container=document.getElementById('waffle-container');
+  for(let i=0;i<100;i++){
+    const cell=document.createElement('div'); cell.className='waffle-cell';
+    cell.style.background=i<80?C.main:C.mint; container.appendChild(cell);
+  }
 })();
 </script>
 </body>
